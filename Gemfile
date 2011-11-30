@@ -5,8 +5,7 @@ group :default do
 end
 
 group :development do
-  gem "jeweler",  "~> 1.5"
-
-  # Specs
-  gem "rspec",    "~> 2.6"
+  gem "jeweler",                 "~> 1.5"
+  gem "rspec",                   "~> 2.7.0"
+  gem "scaffolder-test-helpers", "~> 0.4.0"
 end
