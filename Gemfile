@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 group :default do
   gem "scaffolder",  "~> 0.4.0"
-  gem "genomer",     "~> 0.1.0",
+  gem "genomer",     "~> 0.0.0",
     :git    => 'ssh://git@michaelbarton.repositoryhosting.com/michaelbarton/genomer.git',
     :branch => 'develop'
 end

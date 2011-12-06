@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Barton"]
-  s.date = "2011-11-30"
+  s.date = "2011-12-06"
   s.description = "TODO: longer description of your gem"
   s.email = "mail@michaelbarton.me.uk"
   s.extra_rdoc_files = [
@@ -23,6 +23,9 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "features/plugins.feature",
+    "features/support/env.rb",
+    "genomer-plugin-view.gemspec",
     "lib/genomer-plugin-view.rb",
     "spec/genomer-plugin-view_spec.rb",
     "spec/spec_helper.rb"
@@ -38,7 +41,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<scaffolder>, ["~> 0.4.0"])
-      s.add_runtime_dependency(%q<genomer>, ["~> 0.1.0"])
+      s.add_runtime_dependency(%q<genomer>, ["~> 0.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5"])
       s.add_development_dependency(%q<rspec>, ["~> 2.7.0"])
       s.add_development_dependency(%q<scaffolder-test-helpers>, ["~> 0.4.0"])
@@ -46,7 +49,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<aruba>, ["~> 0.4.6"])
     else
       s.add_dependency(%q<scaffolder>, ["~> 0.4.0"])
-      s.add_dependency(%q<genomer>, ["~> 0.1.0"])
+      s.add_dependency(%q<genomer>, ["~> 0.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5"])
       s.add_dependency(%q<rspec>, ["~> 2.7.0"])
       s.add_dependency(%q<scaffolder-test-helpers>, ["~> 0.4.0"])
@@ -55,7 +58,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<scaffolder>, ["~> 0.4.0"])
-    s.add_dependency(%q<genomer>, ["~> 0.1.0"])
+    s.add_dependency(%q<genomer>, ["~> 0.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5"])
     s.add_dependency(%q<rspec>, ["~> 2.7.0"])
     s.add_dependency(%q<scaffolder-test-helpers>, ["~> 0.4.0"])
