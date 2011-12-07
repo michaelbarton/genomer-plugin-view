@@ -1,13 +1,10 @@
-class GenomerPluginView
+require 'genomer'
 
-  def initialize(scaffold,options)
-    @scaffold = scaffold
-    @options  = options
-  end
+class GenomerPluginView < Genomer::Plugin
 
   def run
-    s = @scaffold.map{|entry| entry.sequence}.join
-    Bio::Sequence.new(s).output(:fasta,:header => @options[:identifier])
+    s = scaffold.map{|entry| entry.sequence}.join
+    Bio::Sequence.new(s).output(:fasta)
   end
 
 end

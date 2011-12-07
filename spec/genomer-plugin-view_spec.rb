@@ -4,20 +4,22 @@ describe GenomerPluginView do
 
   describe "#run" do
 
-    describe "with fasta option given" do
+    describe "with fasta option " do
 
-      describe "passed a scaffold with a single sequence" do
+      describe "and a scaffold with a single sequence" do
 
-        let(:scaffold) do
-          [ Sequence.new(:sequence => 'AAATGA') ]
+        before do
+          mock(subject).scaffold do
+            [Sequence.new(:sequence => 'AAATGA')]
+          end
         end
 
         subject do
-          described_class.new(scaffold,{:format => :fasta,:identifier => 'scaf1'})
+          described_class.new(['fasta'],{})
         end
 
         it "should return fasta output" do
-          subject.run.should == ">scaf1\nAAATGA\n"
+          subject.run.should == ">. \nAAATGA\n"
         end
 
       end
