@@ -2,9 +2,7 @@ source "http://rubygems.org"
 
 group :default do
   gem "scaffolder",  "~> 0.4.0"
-  gem "genomer",     "~> 0.0.0",
-    :git    => 'ssh://git@michaelbarton.repositoryhosting.com/michaelbarton/genomer.git',
-    :branch => 'develop'
+  gem "genomer",     "~> 0.0.0"
 end
 
 group :development do
@@ -13,6 +11,7 @@ group :development do
   # Specs
   gem "rspec",                   "~> 2.7.0"
   gem "scaffolder-test-helpers", "~> 0.4.0"
+  gem "rr",                      "~> 1.0.0"
 
   # Features
   gem "cucumber", "~> 1.0.4"
