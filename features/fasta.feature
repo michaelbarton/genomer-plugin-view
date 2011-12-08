@@ -1,7 +1,7 @@
-Feature: Something
-  Something
-  Something
-  Something
+Feature: Producing a fasta view of a scaffold
+  In order to produce fasta output from a scaffold
+  A user can use the "view" command
+  to generate the required fasta output
 
   @disable-bundler
   Scenario: Generating fasta with the scaffolder-view-plugin
