@@ -51,7 +51,7 @@ Feature: Producing a fasta view of a scaffold
       """
       gem 'genomer-plugin-view', :path => '../../../'
       """
-      When I run `genomer view fasta --identifier=scaffold`
+     When I run `genomer view fasta --identifier=scaffold`
      Then the exit status should be 0
       And the output should contain:
      """
