@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rspec'
+require 'heredoc_unindent'
 require 'scaffolder/test/helpers'
 require 'genomer-plugin-view'
 require 'genomer-plugin-view/gff_record_helper'
