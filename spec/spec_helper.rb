@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rspec'
 require 'scaffolder/test/helpers'
 require 'genomer-plugin-view'
+require 'genomer-plugin-view/gff_record_helper'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
@@ -12,4 +13,5 @@ RSpec.configure do |config|
   config.mock_with :rr
 
   include Scaffolder::Test
+  Scaffolder::Test::Annotation.send(:include, GenomerPluginView::GffRecordHelper)
 end
