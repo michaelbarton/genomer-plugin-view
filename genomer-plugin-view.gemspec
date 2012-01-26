@@ -16,13 +16,13 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = "~> 1.8.0"
   s.rubyforge_project         = "genomer-view-plugin"
 
-  s.add_dependency "scaffolder", "~> 0.4.0"
-  s.add_dependency "genomer",    "~> 0.0.0"
+  s.add_dependency "genomer", ">= 0.0.1"
 
   # Specs
   s.add_development_dependency "rspec",                   "~> 2.7.0"
   s.add_development_dependency "rr",                      "~> 1.0.0"
   s.add_development_dependency "scaffolder-test-helpers", "~> 0.4.0"
+  s.add_development_dependency "heredoc_unindent",        "~> 1.1.0"
 
   # Features
   s.add_development_dependency "cucumber", "~> 1.0.0"

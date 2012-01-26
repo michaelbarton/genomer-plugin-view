@@ -3,8 +3,12 @@ require 'genomer'
 class GenomerPluginView < Genomer::Plugin
 
   def run
-    s = scaffold.map{|entry| entry.sequence}.join
-    Bio::Sequence.new(s).output(:fasta,:header => flags[:identifier])
+    self.class.fetch_view(arguments.shift).new(arguments,flags).run
+  end
+
+  def self.fetch_view(view)
+    require 'genomer-plugin-view/' + view
+    const_get(view.capitalize)
   end
 
 end
