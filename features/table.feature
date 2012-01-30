@@ -71,7 +71,6 @@ Feature: Producing a annotation view of a scaffold
 
         """
 
-
   @disable-bundler
   Scenario: Generating a table file from an annotation with attributes
   Given I successfully run `genomer init project`
@@ -131,7 +130,7 @@ Feature: Producing a annotation view of a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --number-from-origin`
+     When I run `genomer view table --identifier=genome --number_from_origin`
      Then the exit status should be 0
       And the output should contain:
         """
@@ -170,7 +169,7 @@ Feature: Producing a annotation view of a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --number-from-origin`
+     When I run `genomer view table --identifier=genome --number_from_origin`
      Then the exit status should be 0
       And the output should contain:
         """
