@@ -3,49 +3,50 @@ require 'genomer-plugin-view/table'
 
 describe GenomerPluginView::Table do
 
-  subject do
-    described_class.new([],flags)
-  end
+  describe "#render" do
 
-  let(:options) do
-    {}
-  end
-
-  let(:flags) do
-    {:identifier => 'name'}
-  end
-
-  before do
-    mock(subject).annotations(options) do
-      annotations
-    end
-  end
-
-  describe "with no annotations" do
-
-    let(:annotations){ [] }
-
-    it "should return the header line" do
-      subject.run.should == ">Feature\tname\tannotation_table\n"
+    subject do
+      described_class.new([],{})
     end
 
-  end
+    before do
+      stub(subject).annotations do
+        annotations
+      end
+      stub(subject).options do
+        options
+      end
+    end
 
-  describe "with one annotation" do
+    let(:annotations) do
+      [Annotation.new(
+        :seqname    => 'seq1',
+        :start      => 1,
+        :end        => 3,
+        :feature    => 'gene',
+        :attributes =>  {'ID' => 'gene1'})]
+    end
 
-    describe "and only the identifier flag" do
+    describe "with no annotations" do
 
-      let(:annotations) do
-        [Annotation.new(
-          :seqname    => 'seq1',
-          :start      => 1,
-          :end        => 3,
-          :feature    => 'gene',
-          :attributes =>  {'ID' => 'gene1'})]
+      let(:annotations){ [] }
+
+      let(:options){ {} }
+
+      it "should return just the header line" do
+        subject.render.should == ">Feature\t\tannotation_table\n"
+      end
+
+    end
+
+    describe "with the identifier option" do
+
+      let(:options) do
+        {:identifier => 'name'}
       end
 
       it "should return the header line and annotation" do
-        subject.run.should == <<-EOS.unindent
+        subject.render.should == <<-EOS.unindent
         >Feature\tname\tannotation_table
         1\t3\tgene
         \t\t\tlocus_tag\tgene1
@@ -54,56 +55,58 @@ describe GenomerPluginView::Table do
 
     end
 
-    describe "and the number from origin flag" do
+  end
 
-      let(:flags){ {:identifier => 'name', :reset_locus_numbering => true} }
+  describe '#options' do
 
-      let(:options) do
-        {:reset => true}
+    subject do
+      described_class.new([],flags).options
+    end
+
+    describe "with no command line arguments" do
+
+      let(:flags) do
+        {}
       end
 
-      let(:annotations) do
-        [Annotation.new(
-          :seqname    => 'seq1',
-          :start      => 1,
-          :end        => 3,
-          :feature    => 'gene',
-          :attributes =>  {'ID' => '000001'})]
-      end
-
-      it "should return the header line and annotation" do
-        subject.run.should == <<-EOS.unindent
-        >Feature\tname\tannotation_table
-        1\t3\tgene
-        \t\t\tlocus_tag\t000001
-        EOS
+      it "should return an empty hash" do
+        subject.should == {}
       end
 
     end
 
-    describe "and the prefix flag" do
+    describe "with the prefix command line argument" do
 
-      let(:flags){ {:identifier => 'name', :prefix => 'pre_'} }
-
-      let(:options) do
+      let(:flags) do
         {:prefix => 'pre_'}
       end
 
-      let(:annotations) do
-        [Annotation.new(
-          :seqname    => 'seq1',
-          :start      => 1,
-          :end        => 3,
-          :feature    => 'gene',
-          :attributes =>  {'ID' => 'pre_gene1'})]
+      it "should return the prefix argument" do
+        subject.should == {:prefix => 'pre_'}
       end
 
-      it "should return the header line and annotation" do
-        subject.run.should == <<-EOS.unindent
-        >Feature\tname\tannotation_table
-        1\t3\tgene
-        \t\t\tlocus_tag\tpre_gene1
-        EOS
+    end
+
+    describe "with the identifer command line argument" do
+
+      let(:flags) do
+        {:identifier => 'something'}
+      end
+
+      it "should return the prefix argument" do
+        subject.should == {:identifier => 'something'}
+      end
+
+    end
+
+    describe "with the reset_locus_numbering command line argument" do
+
+      let(:flags) do
+        {:reset_locus_numbering => true}
+      end
+
+      it "should return the prefix argument" do
+        subject.should == {:reset => true}
       end
 
     end
