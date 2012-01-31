@@ -33,4 +33,24 @@ describe GenomerPluginView::Fasta do
 
   end
 
+  describe "run with the --organism option" do
+
+    let(:flags){ {:organism => 'name'} }
+
+    it "should return fasta output with the organism modifier" do
+      subject.run.should == ">. [organism=name]\nAAATGA\n"
+    end
+
+  end
+
+  describe "run with the --identifier option" do
+
+    let(:flags){ {:strain => 'name'} }
+
+    it "should return fasta output with the strain modifier" do
+      subject.run.should == ">. [strain=name]\nAAATGA\n"
+    end
+
+  end
+
 end
