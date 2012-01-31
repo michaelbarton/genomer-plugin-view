@@ -7,15 +7,21 @@ describe GenomerPluginView::Table do
     described_class.new([],flags)
   end
 
+  let(:options) do
+    {}
+  end
+
+  let(:flags) do
+    {:identifier => 'name'}
+  end
+
   before do
-    stub(subject).annotations do
+    mock(subject).annotations(options) do
       annotations
     end
   end
 
   describe "with no annotations" do
-
-    let(:flags){ {:identifier => 'name'} }
 
     let(:annotations){ [] }
 
@@ -27,18 +33,16 @@ describe GenomerPluginView::Table do
 
   describe "with one annotation" do
 
-    let(:annotations) do
-      [Annotation.new(
-        :seqname    => 'seq1',
-        :start      => 1,
-        :end        => 3,
-        :feature    => 'gene',
-        :attributes =>  {'ID' => 'gene1'})]
-    end
-
     describe "and only the identifier flag" do
 
-      let(:flags){ {:identifier => 'name'} }
+      let(:annotations) do
+        [Annotation.new(
+          :seqname    => 'seq1',
+          :start      => 1,
+          :end        => 3,
+          :feature    => 'gene',
+          :attributes =>  {'ID' => 'gene1'})]
+      end
 
       it "should return the header line and annotation" do
         subject.run.should == <<-EOS.unindent
@@ -52,7 +56,20 @@ describe GenomerPluginView::Table do
 
     describe "and the number from origin flag" do
 
-      let(:flags){ {:identifier => 'name', :number_from_origin => true} }
+      let(:flags){ {:identifier => 'name', :reset_locus_numbering => true} }
+
+      let(:options) do
+        {:reset => true}
+      end
+
+      let(:annotations) do
+        [Annotation.new(
+          :seqname    => 'seq1',
+          :start      => 1,
+          :end        => 3,
+          :feature    => 'gene',
+          :attributes =>  {'ID' => '000001'})]
+      end
 
       it "should return the header line and annotation" do
         subject.run.should == <<-EOS.unindent
@@ -67,4 +84,3 @@ describe GenomerPluginView::Table do
   end
 
 end
-

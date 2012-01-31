@@ -7,16 +7,24 @@ class GenomerPluginView::Table < Genomer::Plugin
     return render
   end
 
+  def options
+    opts = Hash.new
+    opts[:reset] = true if flags[:reset_locus_numbering]
+    opts
+  end
+
   def render
     delimiter = "\t"
     indent    = delimiter * 2
 
     out = [%W|>Feature #{flags[:identifier]} annotation_table|]
-    annotations.map{|i| i.to_genbank_feature_row}.each do |row|
+    puts flags
+    annotations(options).map{|i| i.to_genbank_feature_row}.each do |row|
       out << row.shift
       row.each{|i| out << i.unshift(indent) }
     end
     return out.map{|line| line * delimiter} * "\n" + "\n"
   end
+
 
 end
