@@ -9,7 +9,8 @@ class GenomerPluginView::Table < Genomer::Plugin
 
   def options
     opts = Hash.new
-    opts[:reset] = true if flags[:reset_locus_numbering]
+    opts[:reset]  = true if flags[:reset_locus_numbering]
+    opts[:prefix] = flags[:prefix] if flags[:prefix]
     opts
   end
 
@@ -18,7 +19,6 @@ class GenomerPluginView::Table < Genomer::Plugin
     indent    = delimiter * 2
 
     out = [%W|>Feature #{flags[:identifier]} annotation_table|]
-    puts flags
     annotations(options).map{|i| i.to_genbank_feature_row}.each do |row|
       out << row.shift
       row.each{|i| out << i.unshift(indent) }

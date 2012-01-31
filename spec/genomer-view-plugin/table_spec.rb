@@ -81,6 +81,33 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "and the prefix flag" do
+
+      let(:flags){ {:identifier => 'name', :prefix => 'pre_'} }
+
+      let(:options) do
+        {:prefix => 'pre_'}
+      end
+
+      let(:annotations) do
+        [Annotation.new(
+          :seqname    => 'seq1',
+          :start      => 1,
+          :end        => 3,
+          :feature    => 'gene',
+          :attributes =>  {'ID' => 'pre_gene1'})]
+      end
+
+      it "should return the header line and annotation" do
+        subject.run.should == <<-EOS.unindent
+        >Feature\tname\tannotation_table
+        1\t3\tgene
+        \t\t\tlocus_tag\tpre_gene1
+        EOS
+      end
+
+    end
+
   end
 
 end
