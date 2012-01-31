@@ -130,7 +130,7 @@ Feature: Producing a annotation view of a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --number_from_origin`
+     When I run `genomer view table --identifier=genome --reset_locus_numbering`
      Then the exit status should be 0
       And the output should contain:
         """
@@ -169,7 +169,7 @@ Feature: Producing a annotation view of a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --number_from_origin`
+     When I run `genomer view table --identifier=genome --reset_locus_numbering`
      Then the exit status should be 0
       And the output should contain:
         """
