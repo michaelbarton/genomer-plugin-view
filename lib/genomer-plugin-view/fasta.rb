@@ -8,8 +8,9 @@ class GenomerPluginView::Fasta < Genomer::Plugin
   end
 
   def header
-    text = flags[:identifier] ? flags.delete(:identifier) : '. '
-    text << flags.map{|k,v| "[#{k}=#{v}]" } * ' '
+    text = flags[:identifier] ? flags.delete(:identifier) : '.'
+    text << ' ' << flags.map{|k,v| "[#{k}=#{v}]" } * ' '
+    text.strip
   end
 
 end

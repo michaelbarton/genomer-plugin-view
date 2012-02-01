@@ -18,7 +18,7 @@ describe GenomerPluginView::Fasta do
     let(:flags){ {} }
 
     it "should return fasta output" do
-      subject.run.should == ">. \nAAATGA\n"
+      subject.run.should == ">.\nAAATGA\n"
     end
 
   end
@@ -43,12 +43,22 @@ describe GenomerPluginView::Fasta do
 
   end
 
-  describe "run with the --identifier option" do
+  describe "run with the --strain option" do
 
     let(:flags){ {:strain => 'name'} }
 
     it "should return fasta output with the strain modifier" do
       subject.run.should == ">. [strain=name]\nAAATGA\n"
+    end
+
+  end
+
+  describe "run with the identifier and a modifier option" do
+
+    let(:flags){ {:strain => 'isolate', :identifier => 'name'} }
+
+    it "should return fasta output with the strain modifier" do
+      subject.run.should == ">name [strain=isolate]\nAAATGA\n"
     end
 
   end
