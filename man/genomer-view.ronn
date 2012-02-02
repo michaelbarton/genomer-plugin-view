@@ -30,6 +30,48 @@ database file formats. The generated file format view is specified by the
     Reset gene ID in annotation file to begin at 1 from the start of the 
     sequence in the generated output file.
 
+  * `--create-cds`=[<cds-prefix>]:
+    Generate corresponding 1:1 CDS entries from the genes entries in the 
+    annotation file. The ID of corresponding gene are prefixed with the 
+    <cds-prefix>.
+
+## GFF NINTH COLUMN ATTRIBUTES
+
+The annotation file should contain all the annotations for the scaffolded 
+contigs in gff format. The default location for this file is
+**assmebly/annotations.gff**. The following attributes in the gff file are are 
+treated specially by genomer when generating flat file output.
+
+### GFF DEFINED ATTRIBUTES
+
+These attributes are defined in the GFF specification and begin with an upper 
+case letter.
+
+  * `ID`:
+    Used to specify the ID of genes in the output file types. If the 
+    `--create-cds` option is passed CDS entries have IDs generated from the 
+    gene ID prefixed with the <cds-prefix>.
+
+  * `Name`:
+    Used to specify the gene name for gene annotations.
+
+### GENOMER ATTRIBUTES
+
+These attributes are specific to genomer and should begin with a lower case 
+letter.
+
+  * `product`:
+    Used to populate the protein product field for CDS entries when the 
+    `--create-cds` option is passed.
+
+  * `ec_number`:
+    Used to populate the protein EC\_number field for CDS entries when the 
+    `--create-cds` option is passed.
+
+  * `note`:
+    Used to populate the protein note field for CDS entries when the 
+    `--create-cds` option is passed.
+
 ## EXAMPLES
 
 Assemble the scaffold sequence into Fasta format. Set the Fasta header to 
