@@ -3,6 +3,15 @@ require 'genomer-plugin-view/table'
 
 describe GenomerPluginView::Table do
 
+  def gff_entry(attributes = Hash.new)
+    Annotation.new(
+      :seqname    => 'seq1',
+      :start      => 1,
+      :end        => 3,
+      :feature    => 'gene',
+      :attributes => attributes)
+  end
+
   describe "#render" do
 
     subject do
@@ -20,15 +29,6 @@ describe GenomerPluginView::Table do
 
     let(:options){ {} }
 
-    let(:gff_entry) do
-      Annotation.new(
-        :seqname    => 'seq1',
-        :start      => 1,
-        :end        => 3,
-        :feature    => 'gene',
-        :attributes => {'ID' => 'gene1'})
-    end
-
     describe "with no annotations" do
 
       let(:annotations){ [] }
@@ -39,41 +39,57 @@ describe GenomerPluginView::Table do
 
     end
 
-    describe "with the identifier command line argument" do
+    describe "creating gene only annotation tables" do
 
-      let(:options) do
-        {:identifier => 'name'}
-      end
+      describe "with the identifier command line argument" do
 
-      let(:annotations) do
-        [gff_entry]
-      end
+        let(:options) do
+          {:identifier => 'name'}
+        end
 
-      it "should return the header line and annotation" do
-        subject.render.should == <<-EOS.unindent
+        let(:annotations) do
+          [gff_entry]
+        end
+
+        it "should return the header line and annotation" do
+          subject.render.should == <<-EOS.unindent
         >Feature\tname\tannotation_table
         1\t3\tgene
-        \t\t\tlocus_tag\tgene1
-        EOS
+          EOS
+        end
+
       end
 
-    end
+      describe "with the 'ID' gff attribute" do
 
-    describe "with the 'Name' gff attribute" do
+        let(:annotations) do
+          [gff_entry({'ID' => 'name'})]
+        end
 
-      let(:annotations) do
-        e = gff_entry.clone
-        e.attributes.merge!({'Name' => 'name'})
-        [e]
-      end
-
-      it "should return the header line and annotation" do
-        subject.render.should == <<-EOS.unindent
+        it "should return the header line and annotation" do
+          subject.render.should == <<-EOS.unindent
         >Feature\t\tannotation_table
         1\t3\tgene
-        \t\t\tlocus_tag\tgene1
+        \t\t\tlocus_tag\tname
+          EOS
+        end
+
+      end
+
+      describe "with the 'Name' gff attribute" do
+
+        let(:annotations) do
+          [gff_entry({'Name' => 'name'})]
+        end
+
+        it "should return the header line and annotation" do
+          subject.render.should == <<-EOS.unindent
+        >Feature\t\tannotation_table
+        1\t3\tgene
         \t\t\tgene\tname
-        EOS
+          EOS
+        end
+
       end
 
     end
