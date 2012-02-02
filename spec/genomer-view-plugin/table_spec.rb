@@ -18,20 +18,20 @@ describe GenomerPluginView::Table do
       end
     end
 
-    let(:annotations) do
-      [Annotation.new(
+    let(:options){ {} }
+
+    let(:gff_entry) do
+      Annotation.new(
         :seqname    => 'seq1',
         :start      => 1,
         :end        => 3,
         :feature    => 'gene',
-        :attributes =>  {'ID' => 'gene1'})]
+        :attributes => {'ID' => 'gene1'})
     end
 
     describe "with no annotations" do
 
       let(:annotations){ [] }
-
-      let(:options){ {} }
 
       it "should return just the header line" do
         subject.render.should == ">Feature\t\tannotation_table\n"
@@ -39,10 +39,14 @@ describe GenomerPluginView::Table do
 
     end
 
-    describe "with the identifier option" do
+    describe "with the identifier command line argument" do
 
       let(:options) do
         {:identifier => 'name'}
+      end
+
+      let(:annotations) do
+        [gff_entry]
       end
 
       it "should return the header line and annotation" do
@@ -50,6 +54,25 @@ describe GenomerPluginView::Table do
         >Feature\tname\tannotation_table
         1\t3\tgene
         \t\t\tlocus_tag\tgene1
+        EOS
+      end
+
+    end
+
+    describe "with the 'Name' gff attribute" do
+
+      let(:annotations) do
+        e = gff_entry.clone
+        e.attributes.merge!({'Name' => 'name'})
+        [e]
+      end
+
+      it "should return the header line and annotation" do
+        subject.render.should == <<-EOS.unindent
+        >Feature\t\tannotation_table
+        1\t3\tgene
+        \t\t\tlocus_tag\tgene1
+        \t\t\tgene\tname
         EOS
       end
 

@@ -86,39 +86,14 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
-    context "cds feature" do
+    context "gene feature with Name attribute" do
 
       let(:annotation) do
-        @attn.feature('CDS')
+        @attn.feature('gene').attributes('Name' => 'something')
       end
 
       it "should return a table array" do
-        subject.should == [[1,3,'CDS']]
-      end
-
-    end
-
-    context "cds feature with an ID attribute" do
-
-      let(:annotation) do
-        @attn.feature('CDS').attributes('ID' => 'two')
-      end
-
-      it "should change the ID attribute" do
-        subject.should == [[1,3,'CDS'],
-          ['protein_id','gnl|ncbi|two']]
-      end
-
-    end
-
-    context "cds feature with a Parent attribute" do
-
-      let(:annotation) do
-        @attn.feature('CDS').attributes('Parent' => 'two')
-      end
-
-      it "should remove the Parent attribute" do
-        subject.should == [[1,3,'CDS']]
+        subject.should == [[1,3,'gene'],['gene','something']]
       end
 
     end

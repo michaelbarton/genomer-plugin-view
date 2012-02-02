@@ -27,5 +27,4 @@ class GenomerPluginView::Table < Genomer::Plugin
     return out.map{|line| line * delimiter} * "\n" + "\n"
   end
 
-
 end
