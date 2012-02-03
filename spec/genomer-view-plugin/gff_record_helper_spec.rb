@@ -38,18 +38,6 @@ describe GenomerPluginView::GffRecordHelper do
       annotation.to_gff3_record.to_genbank_feature_row
     end
 
-    context "gene feature with attributes" do
-
-      let(:annotation) do
-        @attn.feature('gene').attributes('one' => 'two')
-      end
-
-      it "should return a table array" do
-        subject.should == [[1,3,'gene'],['one','two']]
-      end
-
-    end
-
     context "gene feature with ID attributes" do
 
       let(:annotation) do
@@ -114,6 +102,20 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "gene feature with attributes" do
+
+      let(:annotation) do
+        @attn.feature('gene').attributes('one' => 'two')
+      end
+
+      it "should return a table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\tgene
+        \t\t\tone\ttwo
+        EOS
+      end
+
+    end
 
   end
 

@@ -32,7 +32,13 @@ module GenomerPluginView::GffRecordHelper
   end
 
   def to_genbank_table_entry
-    coordinates * "\t" + "\n"
+    delimiter = "\t"
+    indent    = delimiter * 2
+
+    entries = attributes.inject([coordinates]) do |array,atr|
+      array << atr.unshift(indent)
+    end
+    return entries.map{|line| line * delimiter} * "\n" + "\n"
   end
 
 end
