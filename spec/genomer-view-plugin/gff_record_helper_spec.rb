@@ -38,18 +38,6 @@ describe GenomerPluginView::GffRecordHelper do
       annotation.to_gff3_record.to_genbank_feature_row
     end
 
-    context "gene feature on the positive strand" do
-
-      let(:annotation) do
-        @attn.feature('gene')
-      end
-
-      it "should return a table array" do
-        subject.should == [[1,3,'gene']]
-      end
-
-    end
-
     context "gene feature on the negative strand" do
 
       let(:annotation) do
@@ -94,6 +82,32 @@ describe GenomerPluginView::GffRecordHelper do
 
       it "should return a table array" do
         subject.should == [[1,3,'gene'],['gene','something']]
+      end
+
+    end
+
+  end
+
+  describe "#to_genbank_table_entry" do
+
+    before(:each) do
+      @attn = Annotation.new(:start => 1, :end => 3, :strand => '+')
+    end
+
+    subject do
+      annotation.to_gff3_record.to_genbank_table_entry
+    end
+
+    context "gene feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('gene')
+      end
+
+      it "should return a table array" do
+        subject.should == <<-EOS.unindent
+        1\t3\tgene
+        EOS
       end
 
     end

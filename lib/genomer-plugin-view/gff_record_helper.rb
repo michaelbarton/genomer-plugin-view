@@ -31,6 +31,10 @@ module GenomerPluginView::GffRecordHelper
     end
   end
 
+  def to_genbank_table_entry
+    "#{self.start}\t#{self.end}\t#{self.feature}\n"
+  end
+
 end
 
 Bio::GFF::GFF3::Record.send(:include, GenomerPluginView::GffRecordHelper)
