@@ -98,6 +98,18 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "with an unknown command line arguments" do
+
+      let(:flags) do
+        {:something => :unknown}
+      end
+
+      it "should return an empty hash" do
+        subject.should == {}
+      end
+
+    end
+
     describe "with the prefix command line argument" do
 
       let(:flags) do
@@ -128,7 +140,7 @@ describe GenomerPluginView::Table do
         {:reset_locus_numbering => true}
       end
 
-      it "should return the prefix argument" do
+      it "should map this to the the reset argument" do
         subject.should == {:reset => true}
       end
 

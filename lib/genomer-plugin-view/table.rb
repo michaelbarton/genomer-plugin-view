@@ -8,11 +8,17 @@ class GenomerPluginView::Table < Genomer::Plugin
   end
 
   def options
-    opts = Hash.new
-    opts[:reset]  = true if flags[:reset_locus_numbering]
-    opts[:prefix] = flags[:prefix] if flags[:prefix]
-    opts[:identifier] = flags[:identifier] if flags[:identifier]
-    opts
+    flags.inject(Hash.new) do |hash,(k,v)|
+      k = case k
+      when :identifier            then k
+      when :prefix                then k
+      when :reset_locus_numbering then :reset
+      else nil
+      end
+
+      hash[k] = v if k
+      hash
+    end
   end
 
   def render
