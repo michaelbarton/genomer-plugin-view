@@ -32,7 +32,7 @@ module GenomerPluginView::GffRecordHelper
   end
 
   def to_genbank_table_entry
-    "#{self.start}\t#{self.end}\t#{self.feature}\n"
+    coordinates * "\t" + "\n"
   end
 
 end
