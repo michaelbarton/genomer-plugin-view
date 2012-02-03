@@ -105,14 +105,74 @@ describe GenomerPluginView::GffRecordHelper do
     context "gene feature with attributes" do
 
       let(:annotation) do
-        @attn.feature('gene').attributes('one' => 'two')
+        @attn.feature('gene').attributes('ID' => 'id')
       end
 
       it "should return a table entry" do
         subject.should == <<-EOS.unindent
         1\t3\tgene
-        \t\t\tone\ttwo
+        \t\t\tlocus_tag\tid
         EOS
+      end
+
+    end
+
+  end
+
+  describe "#attributes" do
+
+    before(:each) do
+      @attn = Annotation.new(:start => 1, :end => 3, :strand => '+', :feature => 'gene')
+    end
+
+    subject do
+      annotation.to_gff3_record.attributes
+    end
+
+    context "gene feature with no attributes" do
+
+      let(:annotation) do
+        @attn
+      end
+
+      it "should return an empty array" do
+        subject.should be_empty
+      end
+
+    end
+
+    context "gene feature with an unknown attribute" do
+
+      let(:annotation) do
+        @attn.feature('gene').attributes('something' => 'else')
+      end
+
+      it "should return an empty array" do
+        subject.should be_empty
+      end
+
+    end
+
+    context "gene feature with an ID attribute" do
+
+      let(:annotation) do
+        @attn.attributes('ID' => 'two')
+      end
+
+      it "should map to the locus_tag" do
+        subject.should == [['locus_tag','two']]
+      end
+
+    end
+
+    context "gene feature with a Name attribute" do
+
+      let(:annotation) do
+        @attn.attributes('Name' => 'something')
+      end
+
+      it "should map to the gene tag" do
+        subject.should == [['gene','something']]
       end
 
     end

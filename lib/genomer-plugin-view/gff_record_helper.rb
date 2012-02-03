@@ -41,6 +41,16 @@ module GenomerPluginView::GffRecordHelper
     return entries.map{|line| line * delimiter} * "\n" + "\n"
   end
 
+  def attributes
+    super.map do |(k,v)|
+      case k
+      when 'ID'   then ['locus_tag',v]
+      when 'Name' then ['gene',     v]
+      else nil
+      end
+    end.compact
+  end
+
 end
 
 Bio::GFF::GFF3::Record.send(:include, GenomerPluginView::GffRecordHelper)
