@@ -4,7 +4,7 @@ require 'genomer-plugin-view/gff_record_helper'
 class GenomerPluginView::Table < Genomer::Plugin
 
   def run
-    return render
+    self.class.render annotations(options), options
   end
 
   def options

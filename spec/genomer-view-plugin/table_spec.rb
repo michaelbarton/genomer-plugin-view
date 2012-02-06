@@ -3,6 +3,28 @@ require 'genomer-plugin-view/table'
 
 describe GenomerPluginView::Table do
 
+  describe "#run" do
+
+    subject do
+      described_class.new([],{})
+    end
+
+    it "should call the annotations method with options" do
+      mock(subject).options.times(any_times){ {} }
+      mock(subject).annotations({}){ [] }
+      subject.run
+    end
+
+    it "should call the render method with annotations and options" do
+      stub(subject).options{ {} }
+      stub(subject).annotations({}){ [] }
+
+      mock(described_class).render([],{})
+      subject.run
+    end
+
+  end
+
   describe "#render" do
 
     let(:annotations){ [] }
