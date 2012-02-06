@@ -3,93 +3,70 @@ require 'genomer-plugin-view/table'
 
 describe GenomerPluginView::Table do
 
-  def gff_entry(attributes = Hash.new)
-    Annotation.new(
-      :seqname    => 'seq1',
-      :start      => 1,
-      :end        => 3,
-      :feature    => 'gene',
-      :attributes => attributes)
-  end
-
-  describe "#render" do
+  describe "#run" do
 
     subject do
       described_class.new([],{})
     end
 
-    before do
-      stub(subject).annotations do
-        annotations
-      end
-      stub(subject).options do
-        options
-      end
+    it "should call the annotations method with options" do
+      mock(subject).options.times(any_times){ {} }
+      mock(subject).annotations({}){ [] }
+      subject.run
     end
+
+    it "should call the render method with annotations and options" do
+      stub(subject).options{ {} }
+      stub(subject).annotations({}){ [] }
+      mock(described_class).render([],{})
+      subject.run
+    end
+
+  end
+
+  describe "#render" do
+
+    let(:annotations){ [] }
 
     let(:options){ {} }
 
-    describe "with no annotations" do
+    subject do
+      described_class.render(annotations,options)
+    end
 
-      let(:annotations){ [] }
+    describe "with no annotations or flags" do
 
-      it "should return just the header line" do
-        subject.render.should == ">Feature\t\tannotation_table\n"
+      it "should return an empty header line" do
+        subject.should == ">Feature\t\tannotation_table\n"
       end
 
     end
 
-    describe "creating gene only annotation tables" do
+    describe "with no annotations and the identifier flag" do
 
-      describe "with the identifier command line argument" do
+      let(:options){ {:identifier => 'id'} }
 
-        let(:options) do
-          {:identifier => 'name'}
-        end
-
-        let(:annotations) do
-          [gff_entry]
-        end
-
-        it "should return the header line and annotation" do
-          subject.render.should == <<-EOS.unindent
-        >Feature\tname\tannotation_table
-        1\t3\tgene
-          EOS
-        end
-
+      it "should add ID to the header line" do
+        subject.should == ">Feature\tid\tannotation_table\n"
       end
 
-      describe "with the 'ID' gff attribute" do
+    end
 
-        let(:annotations) do
-          [gff_entry({'ID' => 'name'})]
-        end
+    describe "with one annotation" do
 
-        it "should return the header line and annotation" do
-          subject.render.should == <<-EOS.unindent
+      let(:annotations){
+        attn = Annotation.new(:start   => 1,
+                              :end     => 3,
+                              :strand  => '+',
+                              :feature => 'gene').to_gff3_record
+        [attn]
+      }
+
+      it "should call the to_genbank_features method " do
+        subject.should == <<-EOS.unindent
         >Feature\t\tannotation_table
         1\t3\tgene
-        \t\t\tlocus_tag\tname
-          EOS
-        end
-
-      end
-
-      describe "with the 'Name' gff attribute" do
-
-        let(:annotations) do
-          [gff_entry({'Name' => 'name'})]
-        end
-
-        it "should return the header line and annotation" do
-          subject.render.should == <<-EOS.unindent
-        >Feature\t\tannotation_table
-        1\t3\tgene
-        \t\t\tgene\tname
-          EOS
-        end
-
+        EOS
       end
 
     end
@@ -114,6 +91,18 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "with an unrelated command line argument" do
+
+      let(:flags) do
+        {:something => :unknown}
+      end
+
+      it "should return an empty hash" do
+        subject.should == {}
+      end
+
+    end
+
     describe "with the prefix command line argument" do
 
       let(:flags) do
@@ -126,25 +115,13 @@ describe GenomerPluginView::Table do
 
     end
 
-    describe "with the identifer command line argument" do
-
-      let(:flags) do
-        {:identifier => 'something'}
-      end
-
-      it "should return the prefix argument" do
-        subject.should == {:identifier => 'something'}
-      end
-
-    end
-
     describe "with the reset_locus_numbering command line argument" do
 
       let(:flags) do
         {:reset_locus_numbering => true}
       end
 
-      it "should return the prefix argument" do
+      it "should map this to the the reset argument" do
         subject.should == {:reset => true}
       end
 

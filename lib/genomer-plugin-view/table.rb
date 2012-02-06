@@ -4,27 +4,29 @@ require 'genomer-plugin-view/gff_record_helper'
 class GenomerPluginView::Table < Genomer::Plugin
 
   def run
-    return render
+    self.class.render annotations(options), options
   end
 
   def options
-    opts = Hash.new
-    opts[:reset]  = true if flags[:reset_locus_numbering]
-    opts[:prefix] = flags[:prefix] if flags[:prefix]
-    opts[:identifier] = flags[:identifier] if flags[:identifier]
-    opts
+    flags.inject(Hash.new) do |hash,(k,v)|
+      k = case k
+      when :identifier            then k
+      when :prefix                then k
+      when :reset_locus_numbering then :reset
+      else nil
+      end
+
+      hash[k] = v if k
+      hash
+    end
   end
 
-  def render
-    delimiter = "\t"
-    indent    = delimiter * 2
-
-    out = [%W|>Feature #{options[:identifier]} annotation_table|]
-    annotations(options).map{|i| i.to_genbank_feature_row}.each do |row|
-      out << row.shift
-      row.each{|i| out << i.unshift(indent) }
+  def self.render(annotations,options)
+    table = ">Feature\t#{options[:identifier]}\tannotation_table\n"
+    annotations.each do |attn|
+      table << attn.to_genbank_table_entry
     end
-    return out.map{|line| line * delimiter} * "\n" + "\n"
+    table
   end
 
 end

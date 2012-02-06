@@ -31,6 +31,26 @@ module GenomerPluginView::GffRecordHelper
     end
   end
 
+  def to_genbank_table_entry
+    delimiter = "\t"
+    indent    = delimiter * 2
+
+    entries = attributes.inject([coordinates]) do |array,atr|
+      array << atr.unshift(indent)
+    end
+    return entries.map{|line| line * delimiter} * "\n" + "\n"
+  end
+
+  def attributes
+    super.map do |(k,v)|
+      case k
+      when 'ID'   then ['locus_tag',v]
+      when 'Name' then ['gene',     v]
+      else nil
+      end
+    end.compact
+  end
+
 end
 
 Bio::GFF::GFF3::Record.send(:include, GenomerPluginView::GffRecordHelper)
