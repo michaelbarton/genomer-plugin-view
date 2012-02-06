@@ -27,43 +27,6 @@ describe GenomerPluginView::GffRecordHelper do
 
   end
 
-  describe "#to_feature_table" do
-
-    before(:each) do
-      @attn = Annotation.new(:start  => 1, :end => 3,
-                             :strand => '+')
-    end
-
-    subject do
-      annotation.to_gff3_record.to_genbank_feature_row
-    end
-
-    context "gene feature with ID attributes" do
-
-      let(:annotation) do
-        @attn.feature('gene').attributes('ID' => 'two')
-      end
-
-      it "should return a table array" do
-        subject.should == [[1,3,'gene'],['locus_tag','two']]
-      end
-
-    end
-
-    context "gene feature with Name attribute" do
-
-      let(:annotation) do
-        @attn.feature('gene').attributes('Name' => 'something')
-      end
-
-      it "should return a table array" do
-        subject.should == [[1,3,'gene'],['gene','something']]
-      end
-
-    end
-
-  end
-
   describe "#to_genbank_table_entry" do
 
     before(:each) do
