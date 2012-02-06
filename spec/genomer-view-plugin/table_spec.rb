@@ -5,74 +5,46 @@ describe GenomerPluginView::Table do
 
   describe "#render" do
 
-    subject do
-      described_class.new([],{})
-    end
-
-    before do
-      stub(subject).annotations do
-        annotations
-      end
-      stub(subject).options do
-        options
-      end
-    end
+    let(:annotations){ [] }
 
     let(:options){ {} }
 
-    let(:gff_entry) do
-      Annotation.new(
-        :seqname    => 'seq1',
-        :start      => 1,
-        :end        => 3,
-        :feature    => 'gene',
-        :attributes => {'ID' => 'gene1'})
+    subject do
+      described_class.render(annotations,options)
     end
 
-    describe "with no annotations" do
+    describe "with no annotations or flags" do
 
-      let(:annotations){ [] }
-
-      it "should return just the header line" do
-        subject.render.should == ">Feature\t\tannotation_table\n"
+      it "should return an empty header line" do
+        subject.should == ">Feature\t\tannotation_table\n"
       end
 
     end
 
-    describe "with the identifier command line argument" do
+    describe "with no annotations and the identifier flag" do
 
-      let(:options) do
-        {:identifier => 'name'}
-      end
+      let(:options){ {:identifier => 'id'} }
 
-      let(:annotations) do
-        [gff_entry]
-      end
-
-      it "should return the header line and annotation" do
-        subject.render.should == <<-EOS.unindent
-        >Feature\tname\tannotation_table
-        1\t3\tgene
-        \t\t\tlocus_tag\tgene1
-        EOS
+      it "should add ID to the header line" do
+        subject.should == ">Feature\tid\tannotation_table\n"
       end
 
     end
 
-    describe "with the 'Name' gff attribute" do
+    describe "with one annotation" do
 
-      let(:annotations) do
-        e = gff_entry.clone
-        e.attributes.merge!({'Name' => 'name'})
-        [e]
-      end
+      let(:annotations){
+        attn = Annotation.new(:start   => 1,
+                              :end     => 3,
+                              :strand  => '+',
+                              :feature => 'gene').to_gff3_record
+        [attn]
+      }
 
-      it "should return the header line and annotation" do
-        subject.render.should == <<-EOS.unindent
+      it "should call the to_genbank_features method " do
+        subject.should == <<-EOS.unindent
         >Feature\t\tannotation_table
         1\t3\tgene
-        \t\t\tlocus_tag\tgene1
-        \t\t\tgene\tname
         EOS
       end
 
@@ -98,7 +70,7 @@ describe GenomerPluginView::Table do
 
     end
 
-    describe "with an unknown command line arguments" do
+    describe "with an unrelated command line argument" do
 
       let(:flags) do
         {:something => :unknown}
@@ -118,18 +90,6 @@ describe GenomerPluginView::Table do
 
       it "should return the prefix argument" do
         subject.should == {:prefix => 'pre_'}
-      end
-
-    end
-
-    describe "with the identifer command line argument" do
-
-      let(:flags) do
-        {:identifier => 'something'}
-      end
-
-      it "should return the prefix argument" do
-        subject.should == {:identifier => 'something'}
       end
 
     end

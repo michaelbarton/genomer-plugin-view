@@ -21,16 +21,12 @@ class GenomerPluginView::Table < Genomer::Plugin
     end
   end
 
-  def render
-    delimiter = "\t"
-    indent    = delimiter * 2
-
-    out = [%W|>Feature #{options[:identifier]} annotation_table|]
-    annotations(options).map{|i| i.to_genbank_feature_row}.each do |row|
-      out << row.shift
-      row.each{|i| out << i.unshift(indent) }
+  def self.render(annotations,options)
+    table = ">Feature\t#{options[:identifier]}\tannotation_table\n"
+    annotations.each do |attn|
+      table << attn.to_genbank_table_entry
     end
-    return out.map{|line| line * delimiter} * "\n" + "\n"
+    table
   end
 
 end
