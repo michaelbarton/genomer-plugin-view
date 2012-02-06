@@ -287,7 +287,7 @@ Feature: Producing a annotation view of a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --create-cds`
+     When I run `genomer view table --identifier=genome --create_cds`
      Then the exit status should be 0
       And the output should contain:
         """

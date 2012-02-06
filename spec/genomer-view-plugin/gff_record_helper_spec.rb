@@ -80,6 +80,20 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "CDS feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('CDS')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\tCDS
+        EOS
+      end
+
+    end
+
   end
 
   describe "#attributes" do

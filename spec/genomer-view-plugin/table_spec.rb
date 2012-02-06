@@ -49,7 +49,7 @@ describe GenomerPluginView::Table do
 
     end
 
-    describe "with one annotation" do
+    describe "with one gene annotation" do
 
       let(:annotations){ [gene] }
 
@@ -57,6 +57,22 @@ describe GenomerPluginView::Table do
         subject.run.should == <<-EOS.unindent
         >Feature\t\tannotation_table
         1\t3\tgene
+        EOS
+      end
+
+    end
+
+    describe "with one gene annotation and the CDS flag" do
+
+      let(:flags){ {:create_cds => true} }
+
+      let(:annotations){ [gene.to_gff3_record] }
+
+      it "should call the to_genbank_features method " do
+        subject.run.should == <<-EOS.unindent
+        >Feature\t\tannotation_table
+        1\t3\tgene
+        1\t3\tCDS
         EOS
       end
 
@@ -106,6 +122,18 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "with the create-cds command line argument" do
+
+      let(:flags) do
+        {:'create_cds' => true}
+      end
+
+      it "should return the prefix argument" do
+        subject.should == {:cds => true}
+      end
+
+    end
+
     describe "with the reset_locus_numbering command line argument" do
 
       let(:flags) do
@@ -116,6 +144,27 @@ describe GenomerPluginView::Table do
         subject.should == {:reset => true}
       end
 
+    end
+
+  end
+
+  describe "#create_cds_entries" do
+
+    def cds
+      gene.clone.feature('CDS')
+    end
+
+    def annotations(attns)
+      gffs = attns.map{|a| a.to_gff3_record}
+      described_class.new([],{}).create_cds_entries(gffs)
+    end
+
+    it "should return an empty array when passed an empty array" do
+      annotations([]).should be_empty
+    end
+
+    it "should duplicate a simple gene entry" do
+      annotations([gene]).should == [gene.to_gff3_record,cds.to_gff3_record]
     end
 
   end

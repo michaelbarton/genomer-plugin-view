@@ -6,7 +6,10 @@ class GenomerPluginView::Table < Genomer::Plugin
   def run
     header = ">Feature\t#{options[:identifier]}\tannotation_table\n"
 
-    annotations(options).inject(header) do |table,attn|
+    attns = annotations(options)
+    attns = create_cds_entries(attns) if options[:cds]
+
+    attns.inject(header) do |table,attn|
       table << attn.to_genbank_table_entry
     end
   end
@@ -16,6 +19,7 @@ class GenomerPluginView::Table < Genomer::Plugin
       k = case k
       when :identifier            then k
       when :prefix                then k
+      when :create_cds            then :cds
       when :reset_locus_numbering then :reset
       else nil
       end
@@ -25,8 +29,13 @@ class GenomerPluginView::Table < Genomer::Plugin
     end
   end
 
-  def self.create_cds_entries(annotations)
-    annotations.map{|a| a.feature = "CDS"; a}
+  def create_cds_entries(genes)
+    cdss = genes.map do |gene|
+      cds = gene.clone
+      cds.feature = "CDS"
+      cds
+    end
+    genes.zip(cdss).flatten
   end
 
 end
