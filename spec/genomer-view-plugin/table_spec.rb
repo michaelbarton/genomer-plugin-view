@@ -3,67 +3,58 @@ require 'genomer-plugin-view/table'
 
 describe GenomerPluginView::Table do
 
+  def gene
+    Annotation.new(
+      :seqname    => 'seq1',
+      :start      => 1,
+      :end        => 3,
+      :feature    => 'gene',
+      :attributes => Hash.new)
+  end
+
   describe "#run" do
+
+    let(:annotations){ [] }
+
+    let(:flags){ {} }
+
+    before(:each) do
+      stub(subject).annotations do
+        annotations
+      end
+      stub(subject).flags do
+        flags
+      end
+    end
 
     subject do
       described_class.new([],{})
     end
 
-    it "should call the annotations method with options" do
-      mock(subject).options.times(any_times){ {} }
-      mock(subject).annotations({}){ [] }
-      subject.run
-    end
-
-    it "should call the render method with annotations and options" do
-      stub(subject).options{ {} }
-      stub(subject).annotations({}){ [] }
-      mock(described_class).render([],{})
-      subject.run
-    end
-
-  end
-
-  describe "#render" do
-
-    let(:annotations){ [] }
-
-    let(:options){ {} }
-
-    subject do
-      described_class.render(annotations,options)
-    end
-
     describe "with no annotations or flags" do
 
       it "should return an empty header line" do
-        subject.should == ">Feature\t\tannotation_table\n"
+        subject.run.should == ">Feature\t\tannotation_table\n"
       end
 
     end
 
     describe "with no annotations and the identifier flag" do
 
-      let(:options){ {:identifier => 'id'} }
+      let(:flags){ {:identifier => 'id'} }
 
       it "should add ID to the header line" do
-        subject.should == ">Feature\tid\tannotation_table\n"
+        subject.run.should == ">Feature\tid\tannotation_table\n"
       end
 
     end
 
     describe "with one annotation" do
 
-      let(:annotations){
-        attn = Annotation.new(:start   => 1,
-                              :end     => 3,
-                              :strand  => '+',
-                              :feature => 'gene').to_gff3_record
-        [attn]
-      }
+      let(:annotations){ [gene] }
 
       it "should call the to_genbank_features method " do
-        subject.should == <<-EOS.unindent
+        subject.run.should == <<-EOS.unindent
         >Feature\t\tannotation_table
         1\t3\tgene
         EOS

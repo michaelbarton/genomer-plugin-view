@@ -4,7 +4,11 @@ require 'genomer-plugin-view/gff_record_helper'
 class GenomerPluginView::Table < Genomer::Plugin
 
   def run
-    self.class.render annotations(options), options
+    header = ">Feature\t#{options[:identifier]}\tannotation_table\n"
+
+    annotations(options).inject(header) do |table,attn|
+      table << attn.to_genbank_table_entry
+    end
   end
 
   def options
@@ -21,12 +25,8 @@ class GenomerPluginView::Table < Genomer::Plugin
     end
   end
 
-  def self.render(annotations,options)
-    table = ">Feature\t#{options[:identifier]}\tannotation_table\n"
-    annotations.each do |attn|
-      table << attn.to_genbank_table_entry
-    end
-    table
+  def self.create_cds_entries(annotations)
+    annotations.map{|a| a.feature = "CDS"; a}
   end
 
 end
