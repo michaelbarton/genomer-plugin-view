@@ -191,6 +191,12 @@ describe GenomerPluginView::Table do
       a = annotations([g],'pre_').last.to_s.should == c.to_s
     end
 
+    it "should uppercase the Name attribute" do
+      g = gene(:attributes => {'Name' => 'abcd'})
+      c = cds(:attributes  => {'Name' => 'Abcd'})
+      a = annotations([g],'pre_').last.to_s.should == c.to_s
+    end
+
   end
 
 end

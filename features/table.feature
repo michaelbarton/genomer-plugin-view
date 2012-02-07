@@ -298,7 +298,7 @@ Feature: Producing a annotation view of a scaffold
         """
 
   @disable-bundler
-  Scenario: Creating a CDS entry with the ID attribute
+  Scenario: Creating a CDS entry with a prefixed ID and Name attribute
     Given I successfully run `genomer init project`
       And I cd to "project"
       And I write to "assembly/scaffold.yml" with:
@@ -331,5 +331,6 @@ Feature: Producing a annotation view of a scaffold
         			gene	abcd
         3	1	CDS
         			protein_id	pre_gene1
+        			product	Abcd
 
         """

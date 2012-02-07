@@ -8,7 +8,8 @@ module GenomerPluginView::GffRecordHelper
       'Name' => 'gene'
     },
     'CDS'  => {
-      'ID' => 'protein_id',
+      'ID'   => 'protein_id',
+      'Name' => 'product'
     }
   }
 

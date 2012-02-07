@@ -35,7 +35,8 @@ class GenomerPluginView::Table < Genomer::Plugin
       cds.feature = "CDS"
       cds.attributes = cds.attributes.map do |(k,v)|
         v = case k
-        when 'ID' then (prefix.is_a?(String) ? prefix + v : v)
+        when 'ID'   then (prefix.is_a?(String) ? prefix + v : v)
+        when 'Name' then v.capitalize
         else v
         end
         [k,v]
