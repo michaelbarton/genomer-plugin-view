@@ -7,7 +7,7 @@ class GenomerPluginView::Table < Genomer::Plugin
     header = ">Feature\t#{options[:identifier]}\tannotation_table\n"
 
     attns = annotations(options)
-    attns = create_cds_entries(attns) if options[:cds]
+    attns = create_cds_entries(attns, options[:cds]) if options[:cds]
 
     attns.inject(header) do |table,attn|
       table << attn.to_genbank_table_entry
@@ -29,10 +29,17 @@ class GenomerPluginView::Table < Genomer::Plugin
     end
   end
 
-  def create_cds_entries(genes)
+  def create_cds_entries(genes,prefix)
     cdss = genes.map do |gene|
       cds = gene.clone
       cds.feature = "CDS"
+      cds.attributes = cds.attributes.map do |(k,v)|
+        v = case k
+        when 'protein_id' then (prefix.is_a?(String) ? prefix + v : v)
+        else v
+        end
+        [k,v]
+      end
       cds
     end
     genes.zip(cdss).flatten

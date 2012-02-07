@@ -2,6 +2,17 @@ require 'bio'
 
 module GenomerPluginView::GffRecordHelper
 
+  GFF_TO_TABLE = {
+    'gene' => {
+      'ID'   => 'locus_tag',
+      'Name' => 'gene'
+    },
+    'CDS'  => {
+      'ID'         => 'protein_id',
+      'protein_id' => 'protein_id',
+    }
+  }
+
   def negative_strand?
     self.strand == '-'
   end
@@ -43,11 +54,8 @@ module GenomerPluginView::GffRecordHelper
 
   def attributes
     super.map do |(k,v)|
-      case k
-      when 'ID'   then ['locus_tag',v]
-      when 'Name' then ['gene',     v]
-      else nil
-      end
+      k = GFF_TO_TABLE[feature][k]
+      k.nil? ? nil : [k,v]
     end.compact
   end
 

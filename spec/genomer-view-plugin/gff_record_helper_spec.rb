@@ -154,6 +154,18 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "CDS feature with a ID attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('ID' => 'something')
+      end
+
+      it "should map to the protein_id tag" do
+        subject.should == [['protein_id','something']]
+      end
+
+    end
+
   end
 
 end

@@ -3,13 +3,18 @@ require 'genomer-plugin-view/table'
 
 describe GenomerPluginView::Table do
 
-  def gene
-    Annotation.new(
+  def gene(opts = Hash.new)
+    default = {
       :seqname    => 'seq1',
       :start      => 1,
       :end        => 3,
       :feature    => 'gene',
-      :attributes => Hash.new)
+      :attributes => Hash.new}
+    Annotation.new(default.merge(opts)).to_gff3_record
+  end
+
+  def cds(opts = Hash.new)
+    gene({:feature => 'CDS'}.merge(opts))
   end
 
   describe "#run" do
@@ -66,13 +71,31 @@ describe GenomerPluginView::Table do
 
       let(:flags){ {:create_cds => true} }
 
-      let(:annotations){ [gene.to_gff3_record] }
+      let(:annotations){ [gene] }
 
       it "should call the to_genbank_features method " do
         subject.run.should == <<-EOS.unindent
         >Feature\t\tannotation_table
         1\t3\tgene
         1\t3\tCDS
+        EOS
+      end
+
+    end
+
+    describe "with one gene annotation and the CDS prefix flag" do
+
+      let(:flags){ {:create_cds => 'pre_'} }
+
+      let(:annotations){ [gene({:attributes => {'ID' => '1'}})] }
+
+      it "should call the to_genbank_features method " do
+        subject.run.should == <<-EOS.unindent
+        >Feature\t\tannotation_table
+        1\t3\tgene
+        \t\t\tlocus_tag\t1
+        1\t3\tCDS
+        \t\t\tprotein_id\tpre_1
         EOS
       end
 
@@ -150,13 +173,8 @@ describe GenomerPluginView::Table do
 
   describe "#create_cds_entries" do
 
-    def cds
-      gene.clone.feature('CDS')
-    end
-
-    def annotations(attns)
-      gffs = attns.map{|a| a.to_gff3_record}
-      described_class.new([],{}).create_cds_entries(gffs)
+    def annotations(attns,prefix = true)
+      described_class.new([],{}).create_cds_entries(attns,prefix)
     end
 
     it "should return an empty array when passed an empty array" do
@@ -164,7 +182,13 @@ describe GenomerPluginView::Table do
     end
 
     it "should duplicate a simple gene entry" do
-      annotations([gene]).should == [gene.to_gff3_record,cds.to_gff3_record]
+      annotations([gene]).last.to_s.should == cds.to_s
+    end
+
+    it "should prefix the ID in the protein_id attribute" do
+      g = gene(:attributes => {'ID'         => '1'})
+      c = cds(:attributes  => {'protein_id' => 'pre_1'})
+      a = annotations([g],'pre_').last.to_s.should == c.to_s
     end
 
   end
