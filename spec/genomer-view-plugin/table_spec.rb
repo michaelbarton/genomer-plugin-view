@@ -197,6 +197,18 @@ describe GenomerPluginView::Table do
       a = annotations([g],'pre_').last.to_s.should == c.to_s
     end
 
+    it "should add the product attribute" do
+      g = gene(:attributes => {'product' => 'abcd'})
+      c = cds(:attributes  => {'Name'    => 'Abcd'})
+      a = annotations([g],'pre_').last.to_s.should == c.to_s
+    end
+
+    it "should overide the Name attribute with the product attribute" do
+      g = gene(:attributes => {'Name' => 'xyz', 'product' => 'abcd'})
+      c = cds(:attributes  => {'Name' => 'Abcd'})
+      a = annotations([g],'pre_').last.to_s.should == c.to_s
+    end
+
   end
 
 end

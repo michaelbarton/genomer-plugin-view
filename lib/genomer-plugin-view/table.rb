@@ -33,14 +33,23 @@ class GenomerPluginView::Table < Genomer::Plugin
     cdss = genes.map do |gene|
       cds = gene.clone
       cds.feature = "CDS"
-      cds.attributes = cds.attributes.map do |(k,v)|
-        v = case k
-        when 'ID'   then (prefix.is_a?(String) ? prefix + v : v)
-        when 'Name' then v.capitalize
-        else v
-        end
-        [k,v]
+
+      attrs = Hash[cds.attributes]
+
+      if id = attrs['ID']
+        attrs['ID'] = (prefix.is_a?(String) ? prefix + id : id)
       end
+
+      if product = attrs['product']
+        attrs['Name'] = product
+        attrs.delete('product')
+      end
+
+      if name = attrs['Name']
+        attrs['Name'] = name.capitalize
+      end
+
+      cds.attributes = attrs.to_a
       cds
     end
     genes.zip(cdss).flatten

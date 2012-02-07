@@ -334,3 +334,47 @@ Feature: Producing a annotation view of a scaffold
         			product	Abcd
 
         """
+
+  @disable-bundler
+  Scenario: Overwriting the CDS product field with the product attribute
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+        """
+        ---
+          - sequence:
+              source: contig1
+        """
+      And I write to "assembly/sequence.fna" with:
+        """
+        >contig1
+        AAAAATTTTTGGGGGCCCCC
+        """
+      And I write to "assembly/annotations.gff" with:
+        """
+        ##gff-version 3
+        contig1	.	gene	1	3	.	-	1	ID=gene1;product=abcd
+        contig1	.	gene	4	6	.	+	1	ID=gene2;Name=defg;product=xyz
+        """
+      And I append to "Gemfile" with:
+        """
+        gem 'genomer-plugin-view', :path => '../../../'
+        """
+     When I run `genomer view table --identifier=genome --create_cds`
+     Then the exit status should be 0
+      And the output should contain:
+        """
+        >Feature	genome	annotation_table
+        3	1	gene
+        			locus_tag	gene1
+        3	1	CDS
+        			protein_id	gene1
+        			product	Abcd
+        4	6	gene
+        			locus_tag	gene2
+        			gene	defg
+        4	6	CDS
+        			protein_id	gene2
+        			product	Xyz
+
+        """
