@@ -96,14 +96,14 @@ describe GenomerPluginView::GffRecordHelper do
 
   end
 
-  describe "#attributes" do
+  describe "#table_attributes" do
 
     before(:each) do
       @attn = Annotation.new(:start => 1, :end => 3, :strand => '+', :feature => 'gene')
     end
 
     subject do
-      annotation.to_gff3_record.attributes
+      annotation.to_gff3_record.table_attributes
     end
 
     context "gene feature with no attributes" do

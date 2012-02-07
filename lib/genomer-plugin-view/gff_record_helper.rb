@@ -8,8 +8,7 @@ module GenomerPluginView::GffRecordHelper
       'Name' => 'gene'
     },
     'CDS'  => {
-      'ID'         => 'protein_id',
-      'protein_id' => 'protein_id',
+      'ID' => 'protein_id',
     }
   }
 
@@ -46,14 +45,14 @@ module GenomerPluginView::GffRecordHelper
     delimiter = "\t"
     indent    = delimiter * 2
 
-    entries = attributes.inject([coordinates]) do |array,atr|
+    entries = table_attributes.inject([coordinates]) do |array,atr|
       array << atr.unshift(indent)
     end
     return entries.map{|line| line * delimiter} * "\n" + "\n"
   end
 
-  def attributes
-    super.map do |(k,v)|
+  def table_attributes
+    attributes.map do |(k,v)|
       k = GFF_TO_TABLE[feature][k]
       k.nil? ? nil : [k,v]
     end.compact

@@ -186,8 +186,8 @@ describe GenomerPluginView::Table do
     end
 
     it "should prefix the ID in the protein_id attribute" do
-      g = gene(:attributes => {'ID'         => '1'})
-      c = cds(:attributes  => {'protein_id' => 'pre_1'})
+      g = gene(:attributes => {'ID' => '1'})
+      c = cds(:attributes  => {'ID' => 'pre_1'})
       a = annotations([g],'pre_').last.to_s.should == c.to_s
     end
 
