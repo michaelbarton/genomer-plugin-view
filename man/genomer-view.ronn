@@ -49,20 +49,18 @@ case letter.
 
   * `ID`:
     Used to specify the ID of genes in the output. If the `--create-cds` option 
-    is passed CDS entries have IDs generated from this field prefixed with the 
-    <cds-prefix>.
+    is passed CDS entries have the 'protein\_id' field generated from this 
+    field prefixed with the <cds-prefix>.
 
   * `Name`:
-    Used to specify the gene name for gene annotations.
+    Used to specify the gene name for gene annotations. The lower case verson 
+    is used. If the `--create-cds` option is passed CDS entries have the 
+    'product' field generated from this capitalised version of this field.
 
 ### GENOMER ATTRIBUTES
 
 These attributes are specific to genomer and should begin with a lower case 
 letter.
-
-  * `product`:
-    Used to populate the protein product field for CDS entries when the 
-    `--create-cds` option is passed.
 
   * `ec_number`:
     Used to populate the protein EC\_number field for CDS entries when the 
