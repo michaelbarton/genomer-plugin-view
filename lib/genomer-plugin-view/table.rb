@@ -46,7 +46,9 @@ class GenomerPluginView::Table < Genomer::Plugin
       end
 
       if name = attrs['Name']
-        attrs['Name'] = name.capitalize
+        name = name.clone
+        name[0] = name[0].upcase
+        attrs['Name'] = name
       end
 
       cds.attributes = attrs.to_a

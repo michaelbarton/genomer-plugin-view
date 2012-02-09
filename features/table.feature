@@ -315,7 +315,7 @@ Feature: Producing a annotation view of a scaffold
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-        contig1	.	gene	1	3	.	-	1	ID=gene1;Name=abcd
+        contig1	.	gene	1	3	.	-	1	ID=gene1;Name=abcD
         """
       And I append to "Gemfile" with:
         """
@@ -328,10 +328,10 @@ Feature: Producing a annotation view of a scaffold
         >Feature	genome	annotation_table
         3	1	gene
         			locus_tag	gene1
-        			gene	abcd
+        			gene	abcD
         3	1	CDS
         			protein_id	pre_gene1
-        			product	Abcd
+        			product	AbcD
 
         """
 

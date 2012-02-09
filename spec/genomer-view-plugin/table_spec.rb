@@ -191,15 +191,21 @@ describe GenomerPluginView::Table do
       a = annotations([g],'pre_').last.to_s.should == c.to_s
     end
 
-    it "should uppercase the Name attribute" do
-      g = gene(:attributes => {'Name' => 'abcd'})
-      c = cds(:attributes  => {'Name' => 'Abcd'})
-      a = annotations([g],'pre_').last.to_s.should == c.to_s
+    it "should uppercase the Name attribute for the CDS " do
+      g = gene(:attributes => {'Name' => 'abcD'})
+      c = cds(:attributes  => {'Name' => 'AbcD'})
+      annotations([g],'pre_').last.to_s.should == c.to_s
+    end
+
+    it "should preserve the Name attribute for the gene " do
+      g = gene(:attributes => {'Name' => 'abcD'})
+      c = cds(:attributes  => {'Name' => 'AbcD'})
+      annotations([g],'pre_').first.attributes.should == [['Name', 'abcD']]
     end
 
     it "should add the product attribute" do
-      g = gene(:attributes => {'product' => 'abcd'})
-      c = cds(:attributes  => {'Name'    => 'Abcd'})
+      g = gene(:attributes => {'product' => 'abcD'})
+      c = cds(:attributes  => {'Name'    => 'AbcD'})
       a = annotations([g],'pre_').last.to_s.should == c.to_s
     end
 
