@@ -14,6 +14,10 @@ doc
 # jeweler generated
 pkg
 
+# ronn generated
+man/*.[1-9]
+man/*.[1-9].html
+
 # Have editor/IDE/OS specific files you need to ignore? Consider using a global gitignore: 
 #
 # * Create a file at ~/.gitignore

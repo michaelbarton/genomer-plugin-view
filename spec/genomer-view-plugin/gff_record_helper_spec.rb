@@ -27,25 +27,26 @@ describe GenomerPluginView::GffRecordHelper do
 
   end
 
-  describe "#to_feature_table" do
+  describe "#to_genbank_table_entry" do
 
     before(:each) do
-      @attn = Annotation.new(:start  => 1, :end => 3,
-                             :strand => '+')
+      @attn = Annotation.new(:start => 1, :end => 3, :strand => '+',:feature => 'gene')
     end
 
     subject do
-      annotation.to_gff3_record.to_genbank_feature_row
+      annotation.to_gff3_record.to_genbank_table_entry
     end
 
     context "gene feature on the positive strand" do
 
       let(:annotation) do
-        @attn.feature('gene')
+        @attn
       end
 
-      it "should return a table array" do
-        subject.should == [[1,3,'gene']]
+      it "should return a table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\tgene
+        EOS
       end
 
     end
@@ -53,11 +54,13 @@ describe GenomerPluginView::GffRecordHelper do
     context "gene feature on the negative strand" do
 
       let(:annotation) do
-        @attn.strand('-').feature('gene')
+        @attn.strand('-')
       end
 
-      it "should return a table array" do
-        subject.should == [[3,1,'gene']]
+      it "should return a table entry" do
+        subject.should == <<-EOS.unindent
+        3\t1\tgene
+        EOS
       end
 
     end
@@ -65,60 +68,148 @@ describe GenomerPluginView::GffRecordHelper do
     context "gene feature with attributes" do
 
       let(:annotation) do
-        @attn.feature('gene').attributes('one' => 'two')
+        @attn.feature('gene').attributes('ID' => 'id')
       end
 
-      it "should return a table array" do
-        subject.should == [[1,3,'gene'],['one','two']]
-      end
-
-    end
-
-    context "gene feature with ID attributes" do
-
-      let(:annotation) do
-        @attn.feature('gene').attributes('ID' => 'two')
-      end
-
-      it "should return a table array" do
-        subject.should == [[1,3,'gene'],['locus_tag','two']]
+      it "should return a table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\tgene
+        \t\t\tlocus_tag\tid
+        EOS
       end
 
     end
 
-    context "cds feature" do
+    context "CDS feature on the positive strand" do
 
       let(:annotation) do
         @attn.feature('CDS')
       end
 
-      it "should return a table array" do
-        subject.should == [[1,3,'CDS']]
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\tCDS
+        EOS
       end
 
     end
 
-    context "cds feature with an ID attribute" do
+  end
+
+  describe "#table_attributes" do
+
+    before(:each) do
+      @attn = Annotation.new(:start => 1, :end => 3, :strand => '+', :feature => 'gene')
+    end
+
+    subject do
+      annotation.to_gff3_record.table_attributes
+    end
+
+    context "gene feature with no attributes" do
 
       let(:annotation) do
-        @attn.feature('CDS').attributes('ID' => 'two')
+        @attn
       end
 
-      it "should change the ID attribute" do
-        subject.should == [[1,3,'CDS'],
-          ['protein_id','gnl|ncbi|two']]
+      it "should return an empty array" do
+        subject.should be_empty
       end
 
     end
 
-    context "cds feature with a Parent attribute" do
+    context "gene feature with an unknown attribute" do
 
       let(:annotation) do
-        @attn.feature('CDS').attributes('Parent' => 'two')
+        @attn.feature('gene').attributes('something' => 'else')
       end
 
-      it "should remove the Parent attribute" do
-        subject.should == [[1,3,'CDS']]
+      it "should return an empty array" do
+        subject.should be_empty
+      end
+
+    end
+
+    context "gene feature with an ID attribute" do
+
+      let(:annotation) do
+        @attn.attributes('ID' => 'two')
+      end
+
+      it "should map to the locus_tag" do
+        subject.should == [['locus_tag','two']]
+      end
+
+    end
+
+    context "gene feature with a Name attribute" do
+
+      let(:annotation) do
+        @attn.attributes('Name' => 'something')
+      end
+
+      it "should map to the gene tag" do
+        subject.should == [['gene','something']]
+      end
+
+    end
+
+    context "CDS feature with a ID attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('ID' => 'something')
+      end
+
+      it "should map to the protein_id tag" do
+        subject.should == [['protein_id','something']]
+      end
+
+    end
+
+    context "CDS feature with a Name attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('Name' => 'something')
+      end
+
+      it "should map to the protein_id tag" do
+        subject.should == [['product','something']]
+      end
+
+    end
+
+    context "CDS feature with a ec_number attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('ec_number' => 'something')
+      end
+
+      it "should map to the EC_number tag" do
+        subject.should == [['EC_number','something']]
+      end
+
+    end
+
+    context "CDS feature with a note attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('note' => 'something')
+      end
+
+      it "should map to the note tag" do
+        subject.should == [['note','something']]
+      end
+
+    end
+
+    context "CDS feature with a function attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('function' => 'something')
+      end
+
+      it "should map to the function tag" do
+        subject.should == [['function','something']]
       end
 
     end

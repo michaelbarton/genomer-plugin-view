@@ -4,28 +4,57 @@ require 'genomer-plugin-view/gff_record_helper'
 class GenomerPluginView::Table < Genomer::Plugin
 
   def run
-    return render
+    header = ">Feature\t#{options[:identifier]}\tannotation_table\n"
+
+    attns = annotations(options)
+    attns = create_cds_entries(attns, options[:cds]) if options[:cds]
+
+    attns.inject(header) do |table,attn|
+      table << attn.to_genbank_table_entry
+    end
   end
 
   def options
-    opts = Hash.new
-    opts[:reset]  = true if flags[:reset_locus_numbering]
-    opts[:prefix] = flags[:prefix] if flags[:prefix]
-    opts[:identifier] = flags[:identifier] if flags[:identifier]
-    opts
-  end
+    flags.inject(Hash.new) do |hash,(k,v)|
+      k = case k
+      when :identifier            then k
+      when :prefix                then k
+      when :create_cds            then :cds
+      when :reset_locus_numbering then :reset
+      else nil
+      end
 
-  def render
-    delimiter = "\t"
-    indent    = delimiter * 2
-
-    out = [%W|>Feature #{options[:identifier]} annotation_table|]
-    annotations(options).map{|i| i.to_genbank_feature_row}.each do |row|
-      out << row.shift
-      row.each{|i| out << i.unshift(indent) }
+      hash[k] = v if k
+      hash
     end
-    return out.map{|line| line * delimiter} * "\n" + "\n"
   end
 
+  def create_cds_entries(genes,prefix)
+    cdss = genes.map do |gene|
+      cds = gene.clone
+      cds.feature = "CDS"
+
+      attrs = Hash[cds.attributes]
+
+      if id = attrs['ID']
+        attrs['ID'] = (prefix.is_a?(String) ? prefix + id : id)
+      end
+
+      if product = attrs['product']
+        attrs['Name'] = product
+        attrs.delete('product')
+      end
+
+      if name = attrs['Name']
+        name = name.clone
+        name[0] = name[0].upcase
+        attrs['Name'] = name
+      end
+
+      cds.attributes = attrs.to_a
+      cds
+    end
+    genes.zip(cdss).flatten
+  end
 
 end
