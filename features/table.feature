@@ -378,3 +378,42 @@ Feature: Producing a annotation view of a scaffold
         			product	Xyz
 
         """
+
+  @disable-bundler
+  Scenario: CDS features with multiple attributes
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+        """
+        ---
+          - sequence:
+              source: contig1
+        """
+      And I write to "assembly/sequence.fna" with:
+        """
+        >contig1
+        AAAAATTTTTGGGGGCCCCC
+        """
+      And I write to "assembly/annotations.gff" with:
+        """
+        ##gff-version 3
+        contig1	.	gene	1	3	.	-	1	ID=gene1;ec_number=3.5.2.3;note=my protein;function=catalysis
+        """
+      And I append to "Gemfile" with:
+        """
+        gem 'genomer-plugin-view', :path => '../../../'
+        """
+     When I run `genomer view table --identifier=genome --create_cds`
+     Then the exit status should be 0
+      And the output should contain:
+        """
+        >Feature	genome	annotation_table
+        3	1	gene
+        			locus_tag	gene1
+        3	1	CDS
+        			protein_id	gene1
+        			EC_number	3.5.2.3
+        			note	my protein
+        			function	catalysis
+
+        """

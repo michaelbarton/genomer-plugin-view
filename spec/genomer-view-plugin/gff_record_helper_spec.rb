@@ -178,6 +178,42 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "CDS feature with a ec_number attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('ec_number' => 'something')
+      end
+
+      it "should map to the EC_number tag" do
+        subject.should == [['EC_number','something']]
+      end
+
+    end
+
+    context "CDS feature with a note attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('note' => 'something')
+      end
+
+      it "should map to the note tag" do
+        subject.should == [['note','something']]
+      end
+
+    end
+
+    context "CDS feature with a function attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('function' => 'something')
+      end
+
+      it "should map to the function tag" do
+        subject.should == [['function','something']]
+      end
+
+    end
+
   end
 
 end
