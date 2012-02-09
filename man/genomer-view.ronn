@@ -13,7 +13,7 @@ the **flat-file** argument.
 
 ## OPTIONS
 
-  * `--identifer`=[<identifier>]:
+  * `--identifier`=[<identifier>]:
     The sequence identifier to include in generated flatfile outputs.
 
   * `--strain`=[<strain>]:
@@ -39,7 +39,7 @@ the **flat-file** argument.
 
 The annotation file should be in GFF3 format and contain the annotations for 
 the scaffolded contigs. The default location for this file is
-**assmebly/annotations.gff**. The following attributes in the GFF3 file are 
+**assembly/annotations.gff**. The following attributes in the GFF3 file are 
 treated specially by genomer when generating flat file output.
 
 ### GFF DEFINED ATTRIBUTES
@@ -48,12 +48,12 @@ These attributes are defined in the GFF specification and begin with an upper
 case letter.
 
   * `ID`:
-    Used to specify the ID of genes in the output. If the `--create-cds` option 
-    is passed CDS entries have the 'protein\_id' field generated from this 
-    field prefixed with the <cds-prefix>.
+    Used to specify the IDs of the genes in the output. If the `--create-cds` 
+    option is passed CDS entries have IDs field generated from this field 
+    prefixed with the <cds-prefix>.
 
   * `Name`:
-    Used to specify the gene name for gene annotations. The lower case verson 
+    Used to specify the gene name for gene annotations. The lower case version 
     is used. If the `--create-cds` option is passed CDS entries have the 
     'product' field generated from this capitalised version of this field.
 
@@ -62,12 +62,21 @@ case letter.
 These attributes are specific to genomer and should begin with a lower case 
 letter.
 
+  * `product`:
+    Used to populate the **product** for CDS entries when the `--create-cds` 
+    option is passed. This overwrites the value of the **Name** attribute when 
+    creating CDS entries in the output.
+
   * `ec_number`:
-    Used to populate the protein EC\_number field for CDS entries when the 
+    Used to populate the protein **EC\_number** field for CDS entries when the 
     `--create-cds` option is passed.
 
   * `note`:
-    Used to populate the protein note field for CDS entries when the 
+    Used to populate the **note** field for CDS entries when the `--create-cds` 
+    option is passed.
+
+  * `function`:
+    Used to populate the **function** field for CDS entries when the 
     `--create-cds` option is passed.
 
 ## EXAMPLES
@@ -78,9 +87,10 @@ include the sequence identifier, strain, and organism.
     $ genomer view fasta --identifier PRJNA68653 --strain='R124' \
       --organism='Pseudomonas fluorescens'
 
-Assemble annotations into Genbank Table format. Reset the gene order numbering 
-to begin at the sequence start and prefix each gene ID with 'I1A\_'. Set the 
-organism identifier at the top of the feature table to be 'PRJNA68653'.
+Assemble annotations into GenBank Table format suitable for use with `tbl2asn`. 
+Reset the gene order numbering to begin at the sequence start and prefix each 
+gene ID with 'I1A\_'. Set the organism identifier at the top of the feature 
+table to be 'PRJNA68653'.
 
     $ genomer view table --identifier PRJNA68653 --reset_locus_numbering \
         --prefix='I1A_'
