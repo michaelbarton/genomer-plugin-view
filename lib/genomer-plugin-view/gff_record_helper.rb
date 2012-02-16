@@ -10,7 +10,7 @@ module GenomerPluginView::GffRecordHelper
     'CDS'  => {
       'ID'        => 'protein_id',
       'Name'      => 'product',
-      'note'      => 'note',
+      'Note'      => 'note',
       'ec_number' => 'EC_number',
       'function'  => 'function',
     }

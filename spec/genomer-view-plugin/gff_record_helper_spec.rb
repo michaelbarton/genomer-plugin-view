@@ -178,6 +178,18 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "CDS feature with a Note attribute" do
+
+      let(:annotation) do
+        @attn.feature('CDS').attributes('Note' => 'something')
+      end
+
+      it "should map to the protein_id tag" do
+        subject.should == [['note','something']]
+      end
+
+    end
+
     context "CDS feature with a ec_number attribute" do
 
       let(:annotation) do
@@ -186,18 +198,6 @@ describe GenomerPluginView::GffRecordHelper do
 
       it "should map to the EC_number tag" do
         subject.should == [['EC_number','something']]
-      end
-
-    end
-
-    context "CDS feature with a note attribute" do
-
-      let(:annotation) do
-        @attn.feature('CDS').attributes('note' => 'something')
-      end
-
-      it "should map to the note tag" do
-        subject.should == [['note','something']]
       end
 
     end

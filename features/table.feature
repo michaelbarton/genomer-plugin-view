@@ -397,7 +397,7 @@ Feature: Producing a annotation view of a scaffold
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-        contig1	.	gene	1	3	.	-	1	ID=gene1;ec_number=3.5.2.3;note=my protein;function=catalysis
+        contig1	.	gene	1	3	.	-	1	ID=gene1;ec_number=3.5.2.3;Note=my protein;function=catalysis
         """
       And I append to "Gemfile" with:
         """
