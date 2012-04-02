@@ -252,6 +252,18 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "tRNA feature with feature_type attribute" do
+
+      let(:annotation) do
+        @attn.feature('unknown')
+      end
+
+      it "should raise an error" do
+        lambda{ subject.call }.should raise_error(Genomer::Error,"Unknown feature type 'unknown'")
+      end
+
+    end
+
   end
 
 end
