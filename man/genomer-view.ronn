@@ -30,10 +30,11 @@ the **flat-file** argument.
     Reset gene ID to begin at 1 from the start of the sequence in the generated 
     output file.
 
-  * `--create-cds`=[<cds-prefix>]:
-    Generate corresponding 1:1 CDS entries from the genes entries in the 
-    annotation file. The CDS entry IDs generated form the corresponding gene ID 
-    prefixed with the <cds-prefix>.
+  * `--generate_encoded_features`=[<feature-prefix>]:
+    Generate corresponding 1:1 encoded feature entries from the genes entries 
+    in the annotation file. These will commonly be CDS entries but RNA type 
+    entries are also supported. The feature IDs are generated from the 
+    corresponding gene ID prefixed with the <feature-prefix>.
 
 ## GFF NINTH COLUMN ATTRIBUTES
 
@@ -48,14 +49,15 @@ These attributes are defined in the GFF specification and begin with an upper
 case letter.
 
   * `ID`:
-    Used to specify the IDs of the genes in the output. If the `--create-cds` 
-    option is passed CDS entries have IDs field generated from this field 
-    prefixed with the <cds-prefix>.
+    Used to specify the IDs of the genes in the output. If the 
+    `--generate_encoded_features` option is passed encoded features have an ID 
+    generated from this field prefixed with the <feature-prefix> argument.
 
   * `Name`:
     Used to specify the gene name for gene annotations. The lower case version 
-    is used. If the `--create-cds` option is passed CDS entries have the 
-    'product' field generated from this capitalised version of this field.
+    is used. If the `--generate_encoded_features` option is passed encoded 
+    feature entries have the 'product' field generated from this capitalised 
+    version of this field.
 
 ### GENOMER ATTRIBUTES
 
@@ -63,27 +65,27 @@ These attributes are specific to genomer and should begin with a lower case
 letter.
 
   * `product`:
-    Used to populate the **product** field for CDS entries when the 
-    `--create-cds` option is passed. This overwrites the value of the **Name** 
-    attribute when creating CDS entries in the output.
+    Used to populate the **product** field for encoded features when the 
+    `--generate_encoded_features` option is passed. This overwrites the value 
+    of the **Name** attribute when creating encoded feature in the output.
 
   * `entry_type`:
-    When the gene product is not a CDS this field is used, when the 
-    `--create-cds` option is passed, as the corresponding entry type instead of 
-    `CDS`. The genbank specification list examples for `rRNA`, `tmRNA`, `tRNA`, 
-    and `ncRNA`.
+    When the gene product is not a CDS this field can be used, when the 
+    `--generate_encoded_features` option is passed, as the corresponding entry 
+    type instead of `CDS`. The genbank specification list examples for `rRNA`, 
+    `tmRNA`, `tRNA`, and `ncRNA`.
 
   * `ec_number`:
     Used to populate the protein **EC\_number** field for CDS entries when the 
-    `--create-cds` option is passed.
+    `--generate_encoded_features` option is passed.
 
   * `note`:
-    Used to populate the **note** field for CDS entries when the `--create-cds` 
-    option is passed.
+    Used to populate the **note** field for entries when the 
+    `--generate_encoded_features` option is passed.
 
   * `function`:
-    Used to populate the **function** field for CDS entries when the 
-    `--create-cds` option is passed.
+    Used to populate the **function** field for encoded entries when the 
+    `--generate_encoded_features` option is passed.
 
 ## EXAMPLES
 
