@@ -191,10 +191,10 @@ describe GenomerPluginView::Table do
 
   end
 
-  describe "#create_cds_entries" do
+  describe "#create_encoded_features" do
 
     def annotations(attns,prefix = true)
-      described_class.new([],{}).create_cds_entries(attns,prefix)
+      described_class.new([],{}).create_encoded_features(attns,prefix)
     end
 
     it "should return an empty array when passed an empty array" do
