@@ -13,7 +13,11 @@ module GenomerPluginView::GffRecordHelper
       'Note'      => 'note',
       'ec_number' => 'EC_number',
       'function'  => 'function',
-    }
+    },
+    'ncRNA' => { 'product' => 'product' },
+    'rRNA'  => { 'product' => 'product' },
+    'tmRNA' => { 'product' => 'product' },
+    'tRNA'  => { 'product' => 'product' }
   }
 
   def negative_strand?
@@ -29,6 +33,7 @@ module GenomerPluginView::GffRecordHelper
   end
 
   def to_genbank_table_entry
+
     delimiter = "\t"
     indent    = delimiter * 2
 
@@ -38,7 +43,12 @@ module GenomerPluginView::GffRecordHelper
     return entries.map{|line| line * delimiter} * "\n" + "\n"
   end
 
+  def valid?
+    GFF_TO_TABLE.include?(feature)
+  end
+
   def table_attributes
+    raise Genomer::Error, "Unknown feature type '#{feature}'" unless valid?
     attributes.map do |(k,v)|
       k = GFF_TO_TABLE[feature][k]
       k.nil? ? nil : [k,v]

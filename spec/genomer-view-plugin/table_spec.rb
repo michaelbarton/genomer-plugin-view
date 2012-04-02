@@ -69,7 +69,7 @@ describe GenomerPluginView::Table do
 
     describe "with one gene annotation and the CDS flag" do
 
-      let(:flags){ {:create_cds => true} }
+      let(:flags){ {:generate_encoded_features => true} }
 
       let(:annotations){ [gene] }
 
@@ -85,7 +85,7 @@ describe GenomerPluginView::Table do
 
     describe "with one gene annotation and the CDS prefix flag" do
 
-      let(:flags){ {:create_cds => 'pre_'} }
+      let(:flags){ {:generate_encoded_features => 'pre_'} }
 
       let(:annotations){ [gene({:attributes => {'ID' => '1'}})] }
 
@@ -96,6 +96,26 @@ describe GenomerPluginView::Table do
         \t\t\tlocus_tag\t1
         1\t3\tCDS
         \t\t\tprotein_id\tpre_1
+        EOS
+      end
+
+    end
+
+    describe "with one tRNA gene annotation and the CDS prefix flag" do
+
+      let(:flags){ {:generate_encoded_features => 'pre_'} }
+
+      let(:annotations){ [gene({:attributes => {'ID'           => '1',
+                                                'feature_type' => 'tRNA',
+                                                'product'      => 'tRNA-Gly'}})] }
+
+      it "should call the to_genbank_features method " do
+        subject.run.should == <<-EOS.unindent
+        >Feature\t\tannotation_table
+        1\t3\tgene
+        \t\t\tlocus_tag\t1
+        1\t3\ttRNA
+        \t\t\tproduct\ttRNA-Gly
         EOS
       end
 
@@ -145,14 +165,14 @@ describe GenomerPluginView::Table do
 
     end
 
-    describe "with the create-cds command line argument" do
+    describe "with the generate_encoded_features command line argument" do
 
       let(:flags) do
-        {:'create_cds' => true}
+        {:'generate_encoded_features' => true}
       end
 
       it "should return the prefix argument" do
-        subject.should == {:cds => true}
+        subject.should == {:encoded => true}
       end
 
     end
@@ -171,10 +191,10 @@ describe GenomerPluginView::Table do
 
   end
 
-  describe "#create_cds_entries" do
+  describe "#create_encoded_features" do
 
     def annotations(attns,prefix = true)
-      described_class.new([],{}).create_cds_entries(attns,prefix)
+      described_class.new([],{}).create_encoded_features(attns,prefix)
     end
 
     it "should return an empty array when passed an empty array" do
@@ -183,6 +203,14 @@ describe GenomerPluginView::Table do
 
     it "should duplicate a simple gene entry" do
       annotations([gene]).last.to_s.should == cds.to_s
+    end
+
+    it "should create a different entry type when specified" do
+      g = gene(:attributes => {'ID' => '1',     'feature_type' => 'tRNA', 'product' => 'tRNA-Gly'})
+      c = gene(:attributes => {'ID' => 'pre_1', 'feature_type' => 'tRNA', 'product' => 'tRNA-Gly'})
+      c.feature = "tRNA"
+
+      a = annotations([g],'pre_').last.to_s.should == c.to_s
     end
 
     it "should prefix the ID in the protein_id attribute" do

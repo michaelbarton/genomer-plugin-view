@@ -94,6 +94,62 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "tRNA feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('tRNA')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\ttRNA
+        EOS
+      end
+
+    end
+
+    context "tmRNA feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('tmRNA')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\ttmRNA
+        EOS
+      end
+
+    end
+
+    context "rRNA feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('rRNA')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\trRNA
+        EOS
+      end
+
+    end
+
+    context "ncRNA feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('ncRNA')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\tncRNA
+        EOS
+      end
+
+    end
+
   end
 
   describe "#table_attributes" do
@@ -210,6 +266,42 @@ describe GenomerPluginView::GffRecordHelper do
 
       it "should map to the function tag" do
         subject.should == [['function','something']]
+      end
+
+    end
+
+    context "tRNA feature with product attribute" do
+
+      let(:annotation) do
+        @attn.feature('tRNA').attributes('product' => 'something')
+      end
+
+      it "should map to the product tag" do
+        subject.should == [['product','something']]
+      end
+
+    end
+
+    context "tRNA feature with feature_type attribute" do
+
+      let(:annotation) do
+        @attn.feature('tRNA').attributes('feature_type' => 'something')
+      end
+
+      it "should not map to anything" do
+        subject.should == []
+      end
+
+    end
+
+    context "tRNA feature with feature_type attribute" do
+
+      let(:annotation) do
+        @attn.feature('unknown')
+      end
+
+      it "should raise an error" do
+        lambda{ subject.call }.should raise_error(Genomer::Error,"Unknown feature type 'unknown'")
       end
 
     end
