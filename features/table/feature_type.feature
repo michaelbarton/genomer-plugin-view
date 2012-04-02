@@ -4,6 +4,37 @@ Feature: Producing an table view of alternate entries
   to generate the genbank annotation table format with non-CDS
 
   @disable-bundler
+  Scenario: Creating an unknown feature type using 'feature_type'
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+        """
+        ---
+          - sequence:
+              source: contig1
+        """
+      And I write to "assembly/sequence.fna" with:
+        """
+        >contig1
+        AAAAATTTTTGGGGGCCCCC
+        """
+      And I write to "assembly/annotations.gff" with:
+        """
+        ##gff-version 3
+        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=unknown;product=something
+        """
+      And I append to "Gemfile" with:
+        """
+        gem 'genomer-plugin-view', :path => '../../../'
+        """
+     When I run `genomer view table --identifier=genome --generate_encoded_features`
+     Then the exit status should be 1
+      And the output should contain:
+        """
+        Error. Unknown feature type 'unknown'
+        """
+
+  @disable-bundler
   Scenario: Creating a tRNA entry from using the 'feature_type' field
     Given I successfully run `genomer init project`
       And I cd to "project"
@@ -107,7 +138,6 @@ Feature: Producing an table view of alternate entries
         			product	tmRNA
 
         """
-
 
   @disable-bundler
   Scenario: Creating a ncRNA entry from using the 'feature_type' field
