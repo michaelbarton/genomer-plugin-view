@@ -4,7 +4,7 @@ Feature: Producing an table view of alternate entries
   to generate the genbank annotation table format with non-CDS
 
   @disable-bundler
-  Scenario: Creating a simple RNA entry from a using the 'entry_type' field
+  Scenario: Creating a simple RNA entry from a using the 'feature_type' field
     Given I successfully run `genomer init project`
       And I cd to "project"
       And I write to "assembly/scaffold.yml" with:
@@ -21,7 +21,7 @@ Feature: Producing an table view of alternate entries
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-        contig1	.	gene	1	3	.	-	1	ID=gene1;entry_type=tRNA;product=tRNA-Gly
+        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=tRNA;product=tRNA-Gly
         """
       And I append to "Gemfile" with:
         """

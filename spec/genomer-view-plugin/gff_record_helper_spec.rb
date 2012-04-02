@@ -240,10 +240,10 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
-    context "tRNA feature with entry_type attribute" do
+    context "tRNA feature with feature_type attribute" do
 
       let(:annotation) do
-        @attn.feature('tRNA').attributes('entry_type' => 'something')
+        @attn.feature('tRNA').attributes('feature_type' => 'something')
       end
 
       it "should not map to anything" do

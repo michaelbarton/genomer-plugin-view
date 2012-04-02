@@ -105,9 +105,9 @@ describe GenomerPluginView::Table do
 
       let(:flags){ {:create_cds => 'pre_'} }
 
-      let(:annotations){ [gene({:attributes => {'ID'         => '1',
-                                                'entry_type' => 'tRNA',
-                                                'product'    => 'tRNA-Gly'}})] }
+      let(:annotations){ [gene({:attributes => {'ID'           => '1',
+                                                'feature_type' => 'tRNA',
+                                                'product'      => 'tRNA-Gly'}})] }
 
       it "should call the to_genbank_features method " do
         subject.run.should == <<-EOS.unindent
@@ -206,8 +206,8 @@ describe GenomerPluginView::Table do
     end
 
     it "should create a different entry type when specified" do
-      g = gene(:attributes => {'ID' => '1',     'entry_type' => 'tRNA', 'product' => 'tRNA-Gly'})
-      c = gene(:attributes => {'ID' => 'pre_1', 'entry_type' => 'tRNA', 'product' => 'tRNA-Gly'})
+      g = gene(:attributes => {'ID' => '1',     'feature_type' => 'tRNA', 'product' => 'tRNA-Gly'})
+      c = gene(:attributes => {'ID' => 'pre_1', 'feature_type' => 'tRNA', 'product' => 'tRNA-Gly'})
       c.feature = "tRNA"
 
       a = annotations([g],'pre_').last.to_s.should == c.to_s
