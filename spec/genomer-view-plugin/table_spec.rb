@@ -69,7 +69,7 @@ describe GenomerPluginView::Table do
 
     describe "with one gene annotation and the CDS flag" do
 
-      let(:flags){ {:create_cds => true} }
+      let(:flags){ {:generate_encoded_features => true} }
 
       let(:annotations){ [gene] }
 
@@ -85,7 +85,7 @@ describe GenomerPluginView::Table do
 
     describe "with one gene annotation and the CDS prefix flag" do
 
-      let(:flags){ {:create_cds => 'pre_'} }
+      let(:flags){ {:generate_encoded_features => 'pre_'} }
 
       let(:annotations){ [gene({:attributes => {'ID' => '1'}})] }
 
@@ -103,7 +103,7 @@ describe GenomerPluginView::Table do
 
     describe "with one tRNA gene annotation and the CDS prefix flag" do
 
-      let(:flags){ {:create_cds => 'pre_'} }
+      let(:flags){ {:generate_encoded_features => 'pre_'} }
 
       let(:annotations){ [gene({:attributes => {'ID'           => '1',
                                                 'feature_type' => 'tRNA',
@@ -165,14 +165,14 @@ describe GenomerPluginView::Table do
 
     end
 
-    describe "with the create-cds command line argument" do
+    describe "with the generate_encoded_features command line argument" do
 
       let(:flags) do
-        {:'create_cds' => true}
+        {:'generate_encoded_features' => true}
       end
 
       it "should return the prefix argument" do
-        subject.should == {:cds => true}
+        subject.should == {:encoded => true}
       end
 
     end

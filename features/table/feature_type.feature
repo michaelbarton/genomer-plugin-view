@@ -1,6 +1,6 @@
 Feature: Producing an table view of alternate entries
   In order to submit non-CDS genome annotations
-  A user can use the "table" command with --create-cds
+  A user can use the "table" command with --generate_encoded_features
   to generate the genbank annotation table format with non-CDS
 
   @disable-bundler
@@ -27,7 +27,7 @@ Feature: Producing an table view of alternate entries
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --create_cds`
+     When I run `genomer view table --identifier=genome --generate_encoded_features`
      Then the exit status should be 0
       And the output should contain:
         """

@@ -1,6 +1,6 @@
 Feature: Producing cds annotation view from a scaffold
   In order to submit CDS genome annotations
-  A user can use the "table" command with --create-cds
+  A user can use the "table" command with --generate_encoded_features
   to generate the genbank annotation table format with CDS
 
   @disable-bundler
@@ -27,7 +27,7 @@ Feature: Producing cds annotation view from a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --create_cds`
+     When I run `genomer view table --identifier=genome --generate_encoded_features`
      Then the exit status should be 0
       And the output should contain:
         """
@@ -61,7 +61,7 @@ Feature: Producing cds annotation view from a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --create_cds=pre_`
+     When I run `genomer view table --identifier=genome --generate_encoded_features=pre_`
      Then the exit status should be 0
       And the output should contain:
         """
@@ -100,7 +100,7 @@ Feature: Producing cds annotation view from a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --create_cds`
+     When I run `genomer view table --identifier=genome --generate_encoded_features`
      Then the exit status should be 0
       And the output should contain:
         """
@@ -143,7 +143,7 @@ Feature: Producing cds annotation view from a scaffold
         """
         gem 'genomer-plugin-view', :path => '../../../'
         """
-     When I run `genomer view table --identifier=genome --create_cds`
+     When I run `genomer view table --identifier=genome --generate_encoded_features`
      Then the exit status should be 0
       And the output should contain:
         """

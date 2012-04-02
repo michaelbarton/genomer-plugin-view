@@ -7,7 +7,7 @@ class GenomerPluginView::Table < Genomer::Plugin
     header = ">Feature\t#{options[:identifier]}\tannotation_table\n"
 
     attns = annotations(options)
-    attns = create_encoded_features(attns, options[:cds]) if options[:cds]
+    attns = create_encoded_features(attns, options[:encoded]) if options[:encoded]
 
     attns.inject(header) do |table,attn|
       table << attn.to_genbank_table_entry
@@ -17,10 +17,10 @@ class GenomerPluginView::Table < Genomer::Plugin
   def options
     flags.inject(Hash.new) do |hash,(k,v)|
       k = case k
-      when :identifier            then k
-      when :prefix                then k
-      when :create_cds            then :cds
-      when :reset_locus_numbering then :reset
+      when :identifier                then k
+      when :prefix                    then k
+      when :generate_encoded_features then :encoded
+      when :reset_locus_numbering     then :reset
       else nil
       end
 
