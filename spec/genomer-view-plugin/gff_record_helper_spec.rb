@@ -108,6 +108,48 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "tmRNA feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('tmRNA')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\ttmRNA
+        EOS
+      end
+
+    end
+
+    context "rRNA feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('rRNA')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\trRNA
+        EOS
+      end
+
+    end
+
+    context "rcRNA feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('rcRNA')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\trcRNA
+        EOS
+      end
+
+    end
+
   end
 
   describe "#table_attributes" do

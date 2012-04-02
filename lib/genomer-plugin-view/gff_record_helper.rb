@@ -14,9 +14,10 @@ module GenomerPluginView::GffRecordHelper
       'ec_number' => 'EC_number',
       'function'  => 'function',
     },
-    'tRNA'  => {
-      'product' => 'product'
-    }
+    'ncRNA' => { 'product' => 'product' },
+    'rRNA'  => { 'product' => 'product' },
+    'tmRNA' => { 'product' => 'product' },
+    'tRNA'  => { 'product' => 'product' }
   }
 
   def negative_strand?
