@@ -63,9 +63,15 @@ These attributes are specific to genomer and should begin with a lower case
 letter.
 
   * `product`:
-    Used to populate the **product** for CDS entries when the `--create-cds` 
-    option is passed. This overwrites the value of the **Name** attribute when 
-    creating CDS entries in the output.
+    Used to populate the **product** field for CDS entries when the 
+    `--create-cds` option is passed. This overwrites the value of the **Name** 
+    attribute when creating CDS entries in the output.
+
+  * `entry_type`:
+    When the gene product is not a CDS this field is used, when the 
+    `--create-cds` option is passed, as the corresponding entry type instead of 
+    `CDS`. The genbank specification list examples for `rRNA`, `tmRNA`, `tRNA`, 
+    and `ncRNA`.
 
   * `ec_number`:
     Used to populate the protein **EC\_number** field for CDS entries when the 
