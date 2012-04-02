@@ -136,15 +136,15 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
-    context "rcRNA feature on the positive strand" do
+    context "ncRNA feature on the positive strand" do
 
       let(:annotation) do
-        @attn.feature('rcRNA')
+        @attn.feature('ncRNA')
       end
 
       it "should return a CDS table entry" do
         subject.should == <<-EOS.unindent
-        1\t3\trcRNA
+        1\t3\tncRNA
         EOS
       end
 
