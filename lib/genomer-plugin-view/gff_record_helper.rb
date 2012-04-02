@@ -13,6 +13,9 @@ module GenomerPluginView::GffRecordHelper
       'Note'      => 'note',
       'ec_number' => 'EC_number',
       'function'  => 'function',
+    },
+    'tRNA'  => {
+      'product' => 'product'
     }
   }
 

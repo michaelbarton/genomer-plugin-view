@@ -101,6 +101,26 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "with one tRNA gene annotation and the CDS prefix flag" do
+
+      let(:flags){ {:create_cds => 'pre_'} }
+
+      let(:annotations){ [gene({:attributes => {'ID'         => '1',
+                                                'entry_type' => 'tRNA',
+                                                'product'    => 'tRNA-Gly'}})] }
+
+      it "should call the to_genbank_features method " do
+        subject.run.should == <<-EOS.unindent
+        >Feature\t\tannotation_table
+        1\t3\tgene
+        \t\t\tlocus_tag\t1
+        1\t3\ttRNA
+        \t\t\tproduct\ttRNA-Gly
+        EOS
+      end
+
+    end
+
   end
 
   describe '#options' do
@@ -183,6 +203,14 @@ describe GenomerPluginView::Table do
 
     it "should duplicate a simple gene entry" do
       annotations([gene]).last.to_s.should == cds.to_s
+    end
+
+    it "should create a different entry type when specified" do
+      g = gene(:attributes => {'ID' => '1',     'entry_type' => 'tRNA', 'product' => 'tRNA-Gly'})
+      c = gene(:attributes => {'ID' => 'pre_1', 'entry_type' => 'tRNA', 'product' => 'tRNA-Gly'})
+      c.feature = "tRNA"
+
+      a = annotations([g],'pre_').last.to_s.should == c.to_s
     end
 
     it "should prefix the ID in the protein_id attribute" do

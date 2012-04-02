@@ -32,7 +32,6 @@ class GenomerPluginView::Table < Genomer::Plugin
   def create_cds_entries(genes,prefix)
     cdss = genes.map do |gene|
       cds = gene.clone
-      cds.feature = "CDS"
 
       attrs = Hash[cds.attributes]
 
@@ -40,16 +39,26 @@ class GenomerPluginView::Table < Genomer::Plugin
         attrs['ID'] = (prefix.is_a?(String) ? prefix + id : id)
       end
 
-      if product = attrs['product']
-        attrs['Name'] = product
-        attrs.delete('product')
+      if type = attrs['entry_type']
+        cds.feature = type
+      else
+        cds.feature = "CDS"
+
+        if product = attrs['product']
+          attrs['Name'] = product
+          attrs.delete('product')
+        end
+
+        if name = attrs['Name']
+          name = name.clone
+          name[0] = name[0].upcase
+          attrs['Name'] = name
+        end
+
       end
 
-      if name = attrs['Name']
-        name = name.clone
-        name[0] = name[0].upcase
-        attrs['Name'] = name
-      end
+
+
 
       cds.attributes = attrs.to_a
       cds

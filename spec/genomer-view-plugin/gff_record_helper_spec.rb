@@ -94,6 +94,20 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
+    context "tRNA feature on the positive strand" do
+
+      let(:annotation) do
+        @attn.feature('tRNA')
+      end
+
+      it "should return a CDS table entry" do
+        subject.should == <<-EOS.unindent
+        1\t3\ttRNA
+        EOS
+      end
+
+    end
+
   end
 
   describe "#table_attributes" do
@@ -210,6 +224,30 @@ describe GenomerPluginView::GffRecordHelper do
 
       it "should map to the function tag" do
         subject.should == [['function','something']]
+      end
+
+    end
+
+    context "tRNA feature with product attribute" do
+
+      let(:annotation) do
+        @attn.feature('tRNA').attributes('product' => 'something')
+      end
+
+      it "should map to the product tag" do
+        subject.should == [['product','something']]
+      end
+
+    end
+
+    context "tRNA feature with entry_type attribute" do
+
+      let(:annotation) do
+        @attn.feature('tRNA').attributes('entry_type' => 'something')
+      end
+
+      it "should not map to anything" do
+        subject.should == []
       end
 
     end
