@@ -294,7 +294,7 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
-    context "tRNA feature with feature_type attribute" do
+    context "An unknown feature type" do
 
       let(:annotation) do
         @attn.feature('unknown')
