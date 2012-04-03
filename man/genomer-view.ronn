@@ -45,29 +45,38 @@ treated specially by genomer when generating flat file output.
 
 ### GFF DEFINED ATTRIBUTES
 
-These attributes are defined in the GFF specification and begin with an upper 
-case letter.
+These attributes have a predefined meaning in the GFF specification. These all 
+begin with an upper case letter.
 
   * `ID`:
-    Used to specify the IDs of the genes in the output. If the 
-    `--generate_encoded_features` option is passed encoded features have an ID 
-    generated from this field prefixed with the <feature-prefix> argument.
+    Used to specify the ID of annotations in the output. If the 
+    `--generate_encoded_features` option is passed, the encoded features have 
+    an ID generated from this field prefixed with the <feature-prefix> 
+    argument. This field should be unique in the annotation file.
 
   * `Name`:
-    Used to specify the gene name for gene annotations. The lower case version 
-    is used. If the `--generate_encoded_features` option is passed encoded 
-    feature entries have the 'product' field generated from this capitalised 
-    version of this field.
+    Used to specify the four letter annotation name, e.g. pilO. The lower case 
+    version is used for gene names. If the `--generate_encoded_features` option 
+    is passed, additonal encoded feature entries have the `product` field 
+    generated from this capitalised version of this attribute. This need not be 
+    unique in the file.
+
+  * `Note`:
+    Used to populate the **Note** field for entries when the 
+    `--generate_encoded_features` option is passed.
 
 ### GENOMER ATTRIBUTES
 
 These attributes are specific to genomer and should begin with a lower case 
-letter.
+letter. Many of these attributes have a corresponding relationship with fields 
+in genbank table format, however a caveat to this is outlined in the next 
+section.
 
   * `product`:
     Used to populate the **product** field for encoded features when the 
-    `--generate_encoded_features` option is passed. This overwrites the value 
-    of the **Name** attribute when creating encoded feature in the output.
+    `--generate_encoded_features` option is passed. If the **Name** attribute 
+    is also present then the **funtion** field is instead populated with this 
+    value.
 
   * `entry_type`:
     When the gene product is not a CDS this field can be used, when the 
@@ -79,13 +88,43 @@ letter.
     Used to populate the protein **EC\_number** field for CDS entries when the 
     `--generate_encoded_features` option is passed.
 
-  * `note`:
-    Used to populate the **note** field for entries when the 
-    `--generate_encoded_features` option is passed.
-
   * `function`:
     Used to populate the **function** field for encoded entries when the 
-    `--generate_encoded_features` option is passed.
+    `--generate_encoded_features` option is passed. This is overwritten in the 
+    table output by the **product** attribute if both the **Name** and 
+    **product** attributes are present. See the next section for an explanation 
+    of this.
+
+
+### OVERLAP BETWEEN NAME, PRODUCT AND FUNCTION FIELD
+
+The genbank annotation table **product** fields may contain either a short four 
+letter name (e.g. pilO) or a longer gene description (e.g. pilus assembly 
+protein). This presents a problem where data may need to be juggled between the
+**Name**, **product** and **function** fields depending on what is information 
+is avaiable.
+
+Genomer view solves this problem by prioritising these fields in the following 
+order: **Name** > **product** > **function**. If the **Name** attribute is 
+present this will be used for the **product** field in the resulting genbank 
+table. If the **product** attribute is also present at the same time this will 
+instead be used to fill out the **function** field in the genbank table. If 
+only the **product** and **function** attributes are present then these then 
+map to corresponding fields in genbank table. 
+
+### RECOMMENDED FORMAT FOR ANNOTATIONS
+
+All entries should contain a unique `ID` attribute. A `Name` field be used 
+whenever an appropriate four letter name is also available, e.g. 'pilO'. The ID 
+field alone is sufficent for generating a gene-only annotation table. Generally 
+however you will want to generate the encoded annotations also using the 
+`--generate_encoded_annotations` command line flag..
+
+The majority of encoded annotations will be CDS entries but most genomes will 
+also contain RNA non-coding features. CDS annotations should contain either a 
+`product` and/or `Name` field to match the genbank requirements. In general it 
+may be easier to fill out all the `product` field for entries then add names 
+for entries where possible.
 
 ## EXAMPLES
 
