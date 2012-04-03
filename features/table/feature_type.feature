@@ -66,7 +66,7 @@ Feature: Producing an table view of alternate entries
         			locus_tag	gene1
         3	1	tRNA
         			product	tRNA-Gly
-              note something
+        			note	something
 
         """
 
@@ -102,7 +102,7 @@ Feature: Producing an table view of alternate entries
         			locus_tag	gene1
         3	1	rRNA
         			product	ribosomal RNA
-        			note something
+        			note	something
 
         """
 
@@ -138,7 +138,7 @@ Feature: Producing an table view of alternate entries
         			locus_tag	gene1
         3	1	tmRNA
         			product	tmRNA
-        			note something
+        			note	something
 
         """
 
@@ -174,7 +174,7 @@ Feature: Producing an table view of alternate entries
         			locus_tag	gene1
         3	1	ncRNA
         			product	RNA signal
-        			note something
+        			note	something
 
         """
 
