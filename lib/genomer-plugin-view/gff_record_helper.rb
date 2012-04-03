@@ -2,6 +2,9 @@ require 'bio'
 
 module GenomerPluginView::GffRecordHelper
 
+
+  DEFAULT_GFF_MAPPING = {'product' => 'product', 'Note' => 'note' }
+
   GFF_TO_TABLE = {
     'gene' => {
       'ID'   => 'locus_tag',
@@ -14,10 +17,10 @@ module GenomerPluginView::GffRecordHelper
       'ec_number' => 'EC_number',
       'function'  => 'function',
     },
-    'ncRNA' => { 'product' => 'product' },
-    'rRNA'  => { 'product' => 'product' },
-    'tmRNA' => { 'product' => 'product' },
-    'tRNA'  => { 'product' => 'product', 'Note' => 'note' }
+    'ncRNA' => DEFAULT_GFF_MAPPING,
+    'rRNA'  => DEFAULT_GFF_MAPPING,
+    'tmRNA' => DEFAULT_GFF_MAPPING,
+    'tRNA'  => DEFAULT_GFF_MAPPING
   }
 
   def negative_strand?
