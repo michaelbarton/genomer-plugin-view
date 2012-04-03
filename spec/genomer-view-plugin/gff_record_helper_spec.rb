@@ -270,14 +270,14 @@ describe GenomerPluginView::GffRecordHelper do
 
     end
 
-    context "tRNA feature with product attribute" do
+    context "tRNA feature with product and Note attributes" do
 
       let(:annotation) do
-        @attn.feature('tRNA').attributes('product' => 'something')
+        @attn.feature('tRNA').attributes('product' => 'something','Note' => 'else')
       end
 
       it "should map to the product tag" do
-        subject.should == [['product','something']]
+        subject.should == [['product','something'],['note','else']]
       end
 
     end
