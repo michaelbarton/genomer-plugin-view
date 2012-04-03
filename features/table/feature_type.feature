@@ -52,7 +52,7 @@ Feature: Producing an table view of alternate entries
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=tRNA;product=tRNA-Gly
+        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=tRNA;product=tRNA-Gly;Note=something
         """
       And I append to "Gemfile" with:
         """
@@ -66,6 +66,7 @@ Feature: Producing an table view of alternate entries
         			locus_tag	gene1
         3	1	tRNA
         			product	tRNA-Gly
+              note something
 
         """
 
@@ -87,7 +88,7 @@ Feature: Producing an table view of alternate entries
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=rRNA;product=16S ribosomal RNA
+        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=rRNA;product=ribosomal RNA;Note=something
         """
       And I append to "Gemfile" with:
         """
@@ -100,7 +101,8 @@ Feature: Producing an table view of alternate entries
         3	1	gene
         			locus_tag	gene1
         3	1	rRNA
-        			product	16S ribosomal RNA
+        			product	ribosomal RNA
+        			note something
 
         """
 
@@ -122,7 +124,7 @@ Feature: Producing an table view of alternate entries
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=tmRNA;product=tmRNA
+        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=tmRNA;product=tmRNA;Note=something
         """
       And I append to "Gemfile" with:
         """
@@ -136,6 +138,7 @@ Feature: Producing an table view of alternate entries
         			locus_tag	gene1
         3	1	tmRNA
         			product	tmRNA
+        			note something
 
         """
 
@@ -157,7 +160,7 @@ Feature: Producing an table view of alternate entries
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=ncRNA;product=RNA signal component
+        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=ncRNA;product=RNA signal;Note=something
         """
       And I append to "Gemfile" with:
         """
@@ -170,7 +173,8 @@ Feature: Producing an table view of alternate entries
         3	1	gene
         			locus_tag	gene1
         3	1	ncRNA
-        			product	RNA signal component
+        			product	RNA signal
+        			note something
 
         """
 
