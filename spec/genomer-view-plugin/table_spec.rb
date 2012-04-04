@@ -193,54 +193,167 @@ describe GenomerPluginView::Table do
 
   describe "#create_encoded_features" do
 
-    def annotations(attns,prefix = true)
-      described_class.new([],{}).create_encoded_features(attns,prefix)
+    let(:prefix) do
+      nil
     end
 
-    it "should return an empty array when passed an empty array" do
-      annotations([]).should be_empty
+    subject do
+      described_class.new([],{}).create_encoded_features(annotations,prefix).last
     end
 
-    it "should duplicate a simple gene entry" do
-      annotations([gene]).last.to_s.should == cds.to_s
+    describe "passed an empty array" do
+
+      let(:annotations) do
+        []
+      end
+
+      it "should return an empty array" do
+        subject.should be_nil
+      end
+
     end
 
-    it "should create a different entry type when specified" do
-      g = gene(:attributes => {'ID' => '1',     'feature_type' => 'tRNA', 'product' => 'tRNA-Gly'})
-      c = gene(:attributes => {'ID' => 'pre_1', 'feature_type' => 'tRNA', 'product' => 'tRNA-Gly'})
-      c.feature = "tRNA"
+    describe "passed a gene with no attributes" do
 
-      a = annotations([g],'pre_').last.to_s.should == c.to_s
+      let(:annotations) do
+        [gene]
+      end
+
+      it "should return a CDS feature" do
+        subject.should == cds
+      end
+
     end
 
-    it "should prefix the ID in the protein_id attribute" do
-      g = gene(:attributes => {'ID' => '1'})
-      c = cds(:attributes  => {'ID' => 'pre_1'})
-      a = annotations([g],'pre_').last.to_s.should == c.to_s
+    describe "passed a gene with a known feature_type attribute" do
+
+      let(:attributes) do
+        {'feature_type' => 'tRNA'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should return a tRNA feature" do
+        subject.should == gene({:feature => 'tRNA',:attributes => attributes})
+      end
+
     end
 
-    it "should uppercase the Name attribute for the CDS" do
-      g = gene(:attributes => {'Name' => 'abcD'})
-      c = cds(:attributes  => {'Name' => 'AbcD'})
-      annotations([g],'pre_').last.to_s.should == c.to_s
+    describe "passed a gene with an unknown feature_type attribute" do
+
+      let(:attributes) do
+        {'feature_type' => 'unknown'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should raise a Genomer::Error" do
+        lambda{ subject.call }.should raise_error Genomer::Error,
+          "Unknown feature_type 'unknown'"
+      end
+
     end
 
-    it "should preserve the Name attribute for the gene " do
-      g = gene(:attributes => {'Name' => 'abcD'})
-      c = cds(:attributes  => {'Name' => 'AbcD'})
-      annotations([g],'pre_').first.attributes.should == [['Name', 'abcD']]
+    describe "passed a gene with a Name attribute" do
+
+      let(:attributes) do
+        {'Name' => 'abcD'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should set the capitalise value to the product key" do
+        subject.should == cds({:attributes => {'product' => 'AbcD'}})
+      end
+
     end
 
-    it "should add the product attribute" do
-      g = gene(:attributes => {'product' => 'abcD'})
-      c = cds(:attributes  => {'Name'    => 'AbcD'})
-      a = annotations([g],'pre_').last.to_s.should == c.to_s
+    describe "passed a gene with a product attribute" do
+
+      let(:attributes) do
+        {'product' => 'abcd'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should == cds({:attributes => attributes})
+      end
+
     end
 
-    it "should overide the Name attribute with the product attribute" do
-      g = gene(:attributes => {'Name' => 'xyz', 'product' => 'abcd'})
-      c = cds(:attributes  => {'Name' => 'Abcd'})
-      a = annotations([g],'pre_').last.to_s.should == c.to_s
+    describe "passed a gene with a function attribute" do
+
+      let(:attributes) do
+        {'function' => 'abcd'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should == cds({:attributes => attributes})
+      end
+
+    end
+
+    describe "passed a gene with product and function attributes" do
+
+      let(:attributes) do
+        {'product' => 'abcd','function' => 'efgh'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should == cds({:attributes => attributes})
+      end
+
+    end
+
+    describe "passed a gene with Name and product attributes" do
+
+      let(:attributes) do
+        {'Name' => 'abcD','product' => 'efgh'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should map Name to product and product to function" do
+        subject.should == cds({:attributes =>
+          {'product' => 'AbcD','function' => 'efgh'}})
+      end
+
+    end
+
+    describe "passed a gene with Name, product and function attributes" do
+
+      let(:attributes) do
+        {'Name' => 'abcD','product' => 'efgh', 'function' => 'ijkl'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should map Name to product and product to function" do
+        subject.should == cds({:attributes =>
+          {'product' => 'AbcD','function' => 'efgh'}})
+      end
+
     end
 
   end

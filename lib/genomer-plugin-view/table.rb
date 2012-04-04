@@ -29,35 +29,38 @@ class GenomerPluginView::Table < Genomer::Plugin
     end
   end
 
+  SUPPORTED_FEATURE_TYPES = ['CDS','rRNA','tRNA','ncRNA','tmRNA']
+
   def create_encoded_features(genes,prefix)
     features = genes.map do |gene|
       feature = gene.clone
-
-      attrs = Hash[feature.attributes]
+      attrs   = Hash[feature.attributes]
 
       if id = attrs['ID']
         attrs['ID'] = (prefix.is_a?(String) ? prefix + id : id)
       end
 
-      if type = attrs['feature_type']
-        feature.feature = type
-      else
-        feature.feature = "CDS"
+      feature.feature = attrs['feature_type'] || 'CDS'
 
-        if product = attrs['product']
-          attrs['Name'] = product
-          attrs.delete('product')
-        end
-
-        if name = attrs['Name']
-          name = name.clone
-          name[0] = name[0].upcase
-          attrs['Name'] = name
-        end
-
+      unless SUPPORTED_FEATURE_TYPES.include?(feature.feature)
+        raise Genomer::Error, "Unknown feature_type '#{feature.feature}'"
       end
 
-      feature.attributes = attrs.to_a
+      if feature.feature == "CDS"
+        name, prdt, ftn = attrs['Name'], attrs['product'], attrs['function']
+
+        if name
+          name = name.clone
+          name[0] = name[0].upcase
+          prdt, ftn = name,prdt
+        end
+
+        attrs.delete('Name')
+        attrs['product']  = prdt
+        attrs['function'] = ftn
+      end
+
+      feature.attributes = attrs.to_a.reject{|(_,value)| value.nil? }
       feature
     end
     genes.zip(features).flatten
