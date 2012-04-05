@@ -10,13 +10,11 @@ module GenomerPluginView::GffRecordHelper
       'ID'   => 'locus_tag',
       'Name' => 'gene'
     },
-    'CDS'  => {
+    'CDS' => DEFAULT_GFF_MAPPING.merge({
       'ID'        => 'protein_id',
-      'Name'      => 'product',
-      'Note'      => 'note',
       'ec_number' => 'EC_number',
       'function'  => 'function',
-    },
+    }),
     'ncRNA' => DEFAULT_GFF_MAPPING,
     'rRNA'  => DEFAULT_GFF_MAPPING,
     'tmRNA' => DEFAULT_GFF_MAPPING,

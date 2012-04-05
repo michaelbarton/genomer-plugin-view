@@ -215,15 +215,15 @@ describe GenomerPluginView::GffRecordHelper do
         'product' => 'product',
         'Note'    => 'note'},
       :CDS  => {
-        'Name'      => 'product',
         'ec_number' => 'EC_number',
         'function'  => 'function',
+        'product'   => 'product',
         'Note'      => 'note',
         'ID'        => 'protein_id' }}
 
     feature_keys.each do |type,mappings|
       mappings.each do |a,b|
-        context "#{type.to_s} feature with no attributes" do
+        context "#{type.to_s} feature" do
 
           let(:annotation) do
             @attn.feature(type.to_s).attributes(a => :value)
