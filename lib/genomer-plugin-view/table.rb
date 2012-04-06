@@ -29,7 +29,7 @@ class GenomerPluginView::Table < Genomer::Plugin
     end
   end
 
-  SUPPORTED_FEATURE_TYPES = ['CDS','rRNA','tRNA','ncRNA','tmRNA']
+  SUPPORTED_FEATURE_TYPES = ['CDS','rRNA','tRNA','miscRNA','tmRNA']
 
   def create_encoded_features(genes,prefix)
     features = genes.map do |gene|

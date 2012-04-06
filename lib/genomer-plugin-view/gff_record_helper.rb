@@ -15,10 +15,10 @@ module GenomerPluginView::GffRecordHelper
       'ec_number' => 'EC_number',
       'function'  => 'function',
     }),
-    'ncRNA' => DEFAULT_GFF_MAPPING,
-    'rRNA'  => DEFAULT_GFF_MAPPING,
-    'tmRNA' => DEFAULT_GFF_MAPPING,
-    'tRNA'  => DEFAULT_GFF_MAPPING
+    'miscRNA' => DEFAULT_GFF_MAPPING,
+    'rRNA'    => DEFAULT_GFF_MAPPING,
+    'tmRNA'   => DEFAULT_GFF_MAPPING,
+    'tRNA'    => DEFAULT_GFF_MAPPING
   }
 
   def negative_strand?
