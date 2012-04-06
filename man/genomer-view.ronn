@@ -82,7 +82,8 @@ section.
     When the gene product is not a CDS this field can be used, when the 
     `--generate_encoded_features` option is passed, as the corresponding entry 
     type instead of `CDS`. The genbank specification list examples for `rRNA`, 
-    `tmRNA`, `tRNA`, and `ncRNA`.
+    `tmRNA`, `tRNA`, and `miscRNA`. If you require other feature type 
+    implemented, please contact me through the website below.
 
   * `ec_number`:
     Used to populate the protein **EC\_number** field for CDS entries when the 

@@ -31,7 +31,7 @@ Feature: Producing an table view of alternate entries
      Then the exit status should be 1
       And the output should contain:
         """
-        Error. Unknown feature type 'unknown'
+        Error. Unknown feature_type 'unknown'
         """
 
   @disable-bundler
@@ -143,7 +143,7 @@ Feature: Producing an table view of alternate entries
         """
 
   @disable-bundler
-  Scenario: Creating a ncRNA entry from using the 'feature_type' field
+  Scenario: Creating a miscRNA entry from using the 'feature_type' field
     Given I successfully run `genomer init project`
       And I cd to "project"
       And I write to "assembly/scaffold.yml" with:
@@ -160,7 +160,7 @@ Feature: Producing an table view of alternate entries
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=ncRNA;product=RNA signal;Note=something
+        contig1	.	gene	1	3	.	-	1	ID=gene1;feature_type=miscRNA;product=RNA signal;Note=something
         """
       And I append to "Gemfile" with:
         """
@@ -172,7 +172,7 @@ Feature: Producing an table view of alternate entries
         """
         3	1	gene
         			locus_tag	gene1
-        3	1	ncRNA
+        3	1	miscRNA
         			product	RNA signal
         			note	something
 
