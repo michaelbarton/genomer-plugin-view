@@ -31,7 +31,7 @@ Feature: Producing an table view of alternate entries
      Then the exit status should be 1
       And the output should contain:
         """
-        Error. Unknown feature type 'unknown'
+        Error. Unknown feature_type 'unknown'
         """
 
   @disable-bundler
