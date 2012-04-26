@@ -131,3 +131,43 @@ Feature: Producing a fasta view of scaffold contigs
      >contig00002
      CCCCC
      """
+
+  @disable-bundler
+  Scenario: A two contig scaffold with an unresolved region and gapped contig
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+      """
+      ---
+      -
+        sequence:
+          source: "A"
+      -
+        unresolved:
+          length: 10
+      -
+        sequence:
+          source: "B"
+      """
+      And I write to "assembly/sequence.fna" with:
+      """
+      >A
+      AAAAA
+      >B
+      CCCNNNNTTT
+      """
+      And I append to "Gemfile" with:
+      """
+      gem 'genomer-plugin-view', :path => '../../../'
+      """
+     When I run `genomer view fasta --contigs`
+     Then the exit status should be 0
+      And the output should contain:
+     """
+     >contig00001
+     AAAAA
+     >contig00002
+     CCC
+     >contig00003
+     TTT
+     """
