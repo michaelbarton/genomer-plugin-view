@@ -5,8 +5,12 @@ describe GenomerPluginView::Fasta do
 
   before do
     mock(subject).scaffold do
-      [Sequence.new(:sequence => 'AAATGA')]
+      annotations
     end
+  end
+
+  let (:annotations) do
+    [Sequence.new(:sequence => 'AAATGA')]
   end
 
   subject do
@@ -59,6 +63,32 @@ describe GenomerPluginView::Fasta do
 
     it "should return fasta output with the strain modifier" do
       subject.run.should == ">name [strain=isolate]\nAAATGA\n"
+    end
+
+  end
+
+  describe "run with the --contigs option" do
+
+    let(:flags){ {:contigs => true} }
+
+    context "with an ungapped contig scaffold" do
+
+      it "should return fasta output of the contig" do
+        subject.run.should == ">contig00001\nAAATGA\n"
+      end
+
+    end
+
+    context "with a gapped contig scaffold" do
+
+      let(:annotations) do
+        [Sequence.new(:sequence => 'AAANNNNTTT')]
+      end
+
+      it "should return fasta output of the contig" do
+        subject.run.should == ">contig00001\nAAA\n>contig00002\nTTT\n"
+      end
+
     end
 
   end
