@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.authors     = ["Michael Barton"]
   s.email       = ["mail@michaelbarton.me.uk"]
-  s.summary     = %Q{Provide diferrent views of scaffold.}
+  s.summary     = %Q{Provide different views of scaffold.}
   s.description = %Q{Convert genome scaffold into different sequence format views}
 
   s.required_rubygems_version = "~> 1.8.0"
