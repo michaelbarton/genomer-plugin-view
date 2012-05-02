@@ -3,12 +3,14 @@ require 'genomer-plugin-view/agp'
 
 describe GenomerPluginView::Agp do
 
-  let (:contigs) do
-    [Sequence.new(:sequence => 'AATGC')]
+  def contig(sequence)
+    s = mock!
+    stub(s).sequence{ sequence }
+    s
   end
 
   subject do
-    described_class.new(['agp'],flags)
+    described_class.new(['agp'],{})
   end
 
   before do
@@ -17,19 +19,34 @@ describe GenomerPluginView::Agp do
     end
   end
 
-  let(:flags){ {} }
+  context "where the scaffold contains a single contig" do
 
-  describe "with no options" do
+    let (:contigs) do
+      [contig('AATGC')]
+    end
 
-    context "where the scaffold contains a single contig" do
-
-      it "should return agp output" do
-        subject.run.should == <<-EOS.unindent
+    it "should return agp output" do
+      subject.run.should == <<-EOS.unindent
         ##agp-version	2.0
         scaffold	1	5	1	W	contig00001	1	5	+
-        EOS
-      end
+      EOS
+    end
 
+  end
+
+  context "where the scaffold contains a contig with a gap" do
+
+    let (:contigs) do
+      [contig('AAANNNGGG')]
+    end
+
+    it "should return agp output" do
+      subject.run.should == <<-EOS.unindent
+        ##agp-version	2.0
+        scaffold	1	3	1	W	contig00001	1	3	+
+        scaffold	4	6	2	N	contig	3	yes	<required>
+        scaffold	7	9	3	W	contig00002	1	3	+
+      EOS
     end
 
   end

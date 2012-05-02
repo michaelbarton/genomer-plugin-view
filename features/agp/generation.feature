@@ -61,7 +61,8 @@ Feature: Producing an agp view of a scaffold
       And the output should contain:
      """
      ##agp-version	2.0
-     scaffold	1	10	1	W	contig00001	1	10	+
+     scaffold	1	5	1	W	contig00001	1	5	+
+     scaffold	6	10	2	W	contig00002	1	5	+
      """
 
   @disable-bundler
