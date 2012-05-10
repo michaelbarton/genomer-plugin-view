@@ -145,7 +145,7 @@ Feature: Producing an agp view of a scaffold
           source: "contig00001"
       -
         unresolved:
-          length 5
+          length: 5
       -
         sequence:
           source: "contig00002"
@@ -167,7 +167,7 @@ Feature: Producing an agp view of a scaffold
      """
      ##agp-version	2.0
      scaffold	1	5	1	W	contig00001	1	5	+
-     scaffold	6	10	1	N	scaffold	5	yes	<required>
+     scaffold	6	10	2	N	scaffold	5	yes	<required>
      scaffold	11	15	3	W	contig00002	1	5	+
      """
 
@@ -183,7 +183,7 @@ Feature: Producing an agp view of a scaffold
           source: "contig00001"
       -
         unresolved:
-          length 5
+          length: 5
       -
         sequence:
           source: "contig00002"
