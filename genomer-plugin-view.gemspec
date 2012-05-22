@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = "~> 1.8.0"
   s.rubyforge_project         = "genomer-view-plugin"
 
-  s.add_dependency "genomer", ">= 0.0.4"
+  s.add_dependency "genomer", ">= 0.0.5"
 
   # Specs
   s.add_development_dependency "rspec",                   "~> 2.9.0"

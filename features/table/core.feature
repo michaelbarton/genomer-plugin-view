@@ -176,6 +176,42 @@ Feature: Producing a annotation view of a scaffold
         			locus_tag	000002
 
         """
+  @disable-bundler
+  Scenario: Reseting locus tag numbering at specified start value
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+        """
+        ---
+          - sequence:
+              source: contig1
+        """
+      And I write to "assembly/sequence.fna" with:
+        """
+        >contig1
+        AAAAATTTTTGGGGGCCCCC
+        """
+      And I write to "assembly/annotations.gff" with:
+        """
+        ##gff-version 3
+        contig1	.	gene	1	3	.	+	1	ID=gene1
+        contig1	.	gene	4	6	.	+	1	ID=gene2
+        """
+      And I append to "Gemfile" with:
+        """
+        gem 'genomer-plugin-view', :path => '../../../'
+        """
+     When I run `genomer view table --identifier=genome --reset_locus_numbering=5`
+     Then the exit status should be 0
+      And the output should contain:
+        """
+        >Feature	genome	annotation_table
+        1	3	gene
+        			locus_tag	000005
+        4	6	gene
+        			locus_tag	000006
+
+        """
 
   @disable-bundler
   Scenario: Reseting locus tag at the scaffold origin with unordered annotations
