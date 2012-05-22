@@ -56,7 +56,7 @@ class GenomerPluginView::Agp < Genomer::Plugin
   end
 
   def gap(start, stop, count, type)
-    %W|scaffold #{start} #{stop} #{count} N #{type} #{stop - start + 1} yes <required>| * "\t"
+    %W|scaffold #{start} #{stop} #{count} N #{stop - start + 1} #{type} yes <required>| * "\t"
   end
 
 end

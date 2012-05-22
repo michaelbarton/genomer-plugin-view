@@ -52,7 +52,7 @@ describe GenomerPluginView::Agp do
       subject.run.should == <<-EOS.unindent
         ##agp-version	2.0
         scaffold	1	3	1	W	contig00001	1	3	+
-        scaffold	4	6	2	N	contig	3	yes	<required>
+        scaffold	4	6	2	N	3	contig	yes	<required>
         scaffold	7	9	3	W	contig00002	1	3	+
       EOS
     end
@@ -69,7 +69,7 @@ describe GenomerPluginView::Agp do
       subject.run.should == <<-EOS.unindent
         ##agp-version	2.0
         scaffold	1	3	1	W	contig00001	1	3	+
-        scaffold	4	6	2	N	scaffold	3	yes	<required>
+        scaffold	4	6	2	N	3	scaffold	yes	<required>
         scaffold	7	9	3	W	contig00002	1	3	+
       EOS
     end
