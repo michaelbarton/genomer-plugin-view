@@ -91,7 +91,7 @@ Feature: Producing an agp view of a scaffold
      """
      ##agp-version	2.0
      scaffold	1	3	1	W	contig00001	1	3	+
-     scaffold	4	6	2	N	3	contig	yes	<required>
+     scaffold	4	6	2	N	3	scaffold	yes	internal
      scaffold	7	9	3	W	contig00002	1	3	+
      """
 
@@ -126,10 +126,10 @@ Feature: Producing an agp view of a scaffold
      """
      ##agp-version	2.0
      scaffold	1	3	1	W	contig00001	1	3	+
-     scaffold	4	6	2	N	3	contig	yes	<required>
+     scaffold	4	6	2	N	3	scaffold	yes	internal
      scaffold	7	9	3	W	contig00002	1	3	+
      scaffold	10	10	4	W	contig00003	1	1	+
-     scaffold	11	11	5	N	1	contig	yes	<required>
+     scaffold	11	11	5	N	1	scaffold	yes	internal
      scaffold	12	12	6	W	contig00004	1	1	+
      """
 
@@ -167,7 +167,7 @@ Feature: Producing an agp view of a scaffold
      """
      ##agp-version	2.0
      scaffold	1	5	1	W	contig00001	1	5	+
-     scaffold	6	10	2	N	5	scaffold	yes	<required>
+     scaffold	6	10	2	N	5	scaffold	yes	specified
      scaffold	11	15	3	W	contig00002	1	5	+
      """
 
@@ -205,8 +205,8 @@ Feature: Producing an agp view of a scaffold
      """
      ##agp-version	2.0
      scaffold	1	5	1	W	contig00001	1	5	+
-     scaffold	6	10	2	N	5	contig	yes	<required>
-     scaffold	11	15	3	N	5	scaffold	yes	<required>
+     scaffold	6	10	2	N	5	scaffold	yes	internal
+     scaffold	11	15	3	N	5	scaffold	yes	specified
      scaffold	16	20	4	W	contig00002	1	5	+
-     scaffold	21	25	5	N	5	contig	yes	<required>
+     scaffold	21	25	5	N	5	scaffold	yes	internal
      """
