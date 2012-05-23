@@ -1,0 +1,46 @@
+genomer-view-agp(1) -- Generate agp file views of scaffold
+==========================================================
+
+## SYNOPSIS
+
+`genomer view agp`
+
+## DESCRIPTION
+
+**Genomer-view-agp** produces an AGP view of a scaffold. This format shows the 
+positions of gaps and contigs in the scaffold. More details on this format can
+be found on the [AGP specification page](http://www.ncbi.nlm.nih.gov/projects/genome/assembly/agp/AGP_Specification.shtml "AGP Specification").
+
+This command converts the scaffold into AGP format as follows:
+
+  * contigs:
+    Contiguous sequences of non-N nucleotides generate corresponding sequence 
+    entries in the AGP file. Note: two sequence positioned next to each other 
+    in the scaffold file do not however produce a single contig entry.
+
+  * internal contig gaps:
+
+    Regions of N characters in scaffold sequences are converted 'scaffold' gaps
+    in the AGP file. The 'Linkage Evidence' field is set to "internal" and this
+    should be set to the correct AGP field type after generation. See the AGP
+    Specification for allowed evidence types.
+
+  * unresolved regions:
+
+    'Unresolved' entries in the 'scaffold.yml' file result in a **scaffold**
+    gap entry in AGP file. The 'Linkage Evidence' field is set to "specified"
+    and this should be set to the correct AGP field type after generation. See
+    the AGP Specification for allowed evidence types.
+
+## EXAMPLES
+
+    $ genomer view agp
+
+## BUGS
+
+**Genomer-view** is written in Ruby and depends on the genomer gem. See the 
+Gemfile in the genomer-plugin-view gem install directory for version details.
+
+## COPYRIGHT
+
+**Genomer** is Copyright (C) 2012 Michael Barton <http://michaelbarton.me.uk>

@@ -1,0 +1,153 @@
+genomer-view(1) -- Generate file format views of scaffold and annotations
+=========================================================================
+
+## SYNOPSIS
+
+`genomer view` <flatfile-type> [<options>...]
+
+## DESCRIPTION
+
+**Genomer-view** assembles the scaffold and associated annotations to produce 
+common database file formats. The generated file format view is specified by 
+the **flat-file** argument.
+
+## OPTIONS
+
+  * `--identifier`=[<identifier>]:
+    The sequence identifier to include in generated flatfile outputs.
+
+  * `--strain`=[<strain>]:
+    The strain of the source organism.
+    
+  * `--organism`=[<organism>]:
+    The genus and species, enclosed in single quotes, of the source organism.
+
+  * `--prefix`=[<gene-prefix>]:
+    Prepend all ID attributes from the annotation file with <gene-prefix> in 
+    the generated output.
+
+  * `--reset_locus_numbering`:
+    Reset gene ID to begin at 1 from the start of the sequence in the generated 
+    output file.
+
+  * `--generate_encoded_features`=[<feature-prefix>]:
+    Generate corresponding 1:1 encoded feature entries from the genes entries 
+    in the annotation file. These will commonly be CDS entries but RNA type 
+    entries are also supported. The feature IDs are generated from the 
+    corresponding gene ID prefixed with the <feature-prefix>.
+
+## GFF NINTH COLUMN ATTRIBUTES
+
+The annotation file should be in GFF3 format and contain the annotations for 
+the scaffolded contigs. The default location for this file is
+**assembly/annotations.gff**. The following attributes in the GFF3 file are 
+treated specially by genomer when generating flat file output.
+
+### GFF DEFINED ATTRIBUTES
+
+These attributes have a predefined meaning in the GFF specification. These all 
+begin with an upper case letter.
+
+  * `ID`:
+    Used to specify the ID of annotations in the output. If the 
+    `--generate_encoded_features` option is passed, the encoded features have 
+    an ID generated from this field prefixed with the <feature-prefix> 
+    argument. This field should be unique in the annotation file.
+
+  * `Name`:
+    Used to specify the four letter annotation name, e.g. pilO. The lower case 
+    version is used for gene names. If the `--generate_encoded_features` option 
+    is passed, additonal encoded feature entries have the `product` field 
+    generated from this capitalised version of this attribute. This need not be 
+    unique in the file.
+
+  * `Note`:
+    Used to populate the **Note** field for entries when the 
+    `--generate_encoded_features` option is passed.
+
+### GENOMER ATTRIBUTES
+
+These attributes are specific to genomer and should begin with a lower case 
+letter. Many of these attributes have a corresponding relationship with fields 
+in genbank table format, however a caveat to this is outlined in the next 
+section.
+
+  * `product`:
+    Used to populate the **product** field for encoded features when the 
+    `--generate_encoded_features` option is passed. If the **Name** attribute 
+    is also present then the **funtion** field is instead populated with this 
+    value.
+
+  * `entry_type`:
+    When the gene product is not a CDS this field can be used, when the 
+    `--generate_encoded_features` option is passed, as the corresponding entry 
+    type instead of `CDS`. The genbank specification list examples for `rRNA`, 
+    `tmRNA`, `tRNA`, and `miscRNA`. If you require other feature type 
+    implemented, please contact me through the website below.
+
+  * `ec_number`:
+    Used to populate the protein **EC\_number** field for CDS entries when the 
+    `--generate_encoded_features` option is passed.
+
+  * `function`:
+    Used to populate the **function** field for encoded entries when the 
+    `--generate_encoded_features` option is passed. This is overwritten in the 
+    table output by the **product** attribute if both the **Name** and 
+    **product** attributes are present. See the next section for an explanation 
+    of this.
+
+
+### OVERLAP BETWEEN NAME, PRODUCT AND FUNCTION FIELD
+
+The genbank annotation table **product** fields may contain either a short four 
+letter name (e.g. pilO) or a longer gene description (e.g. pilus assembly 
+protein). This presents a problem where data may need to be juggled between the
+**Name**, **product** and **function** fields depending on what is information 
+is avaiable.
+
+Genomer view solves this problem by prioritising these fields in the following 
+order: **Name** > **product** > **function**. If the **Name** attribute is 
+present this will be used for the **product** field in the resulting genbank 
+table. If the **product** attribute is also present at the same time this will 
+instead be used to fill out the **function** field in the genbank table. If 
+only the **product** and **function** attributes are present then these then 
+map to corresponding fields in genbank table. 
+
+### RECOMMENDED FORMAT FOR ANNOTATIONS
+
+All entries should contain a unique `ID` attribute. A `Name` field be used 
+whenever an appropriate four letter name is also available, e.g. 'pilO'. The ID 
+field alone is sufficent for generating a gene-only annotation table. Generally 
+however you will want to generate the encoded annotations also using the 
+`--generate_encoded_annotations` command line flag..
+
+The majority of encoded annotations will be CDS entries but most genomes will 
+also contain RNA non-coding features. CDS annotations should contain either a 
+`product` and/or `Name` field to match the genbank requirements. In general it 
+may be easier to fill out all the `product` field for entries then add names 
+for entries where possible.
+
+## EXAMPLES
+
+Assemble the scaffold sequence into Fasta format. Set the Fasta header to 
+include the sequence identifier, strain, and organism.
+
+    $ genomer view fasta --identifier PRJNA68653 --strain='R124' \
+      --organism='Pseudomonas fluorescens'
+
+Assemble annotations into GenBank Table format suitable for use with `tbl2asn`. 
+Reset the gene order numbering to begin at the sequence start and prefix each 
+gene ID with 'I1A\_'. Set the organism identifier at the top of the feature 
+table to be 'PRJNA68653'.
+
+    $ genomer view table --identifier PRJNA68653 --reset_locus_numbering \
+        --prefix='I1A_'
+
+## BUGS
+
+**Genomer-view** is written in Ruby and depends on the genomer gem. See the 
+Gemfile in the genomer-plugin-view gem install directory for version details.
+
+## COPYRIGHT
+
+**Genomer** is Copyright (C) 2012 Michael Barton <http://michaelbarton.me.uk>
