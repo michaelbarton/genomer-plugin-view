@@ -25,7 +25,7 @@ class GenomerPluginView::Agp < Genomer::Plugin
         count += 1
         start = cumulative_length
         stop  = cumulative_length += length
-        gap(start, stop - 1, count, 'scaffold')
+        gap(start, stop - 1, count, 'specified')
       when :sequence   then
         seq = entry.sequence.upcase
         seq_regions = locations(seq,/[^N]+/).map{|i| [:contig,i]}
@@ -42,7 +42,7 @@ class GenomerPluginView::Agp < Genomer::Plugin
                   when :gap    then
                     start = cumulative_length
                     stop  = cumulative_length + length
-                    gap(start, stop, count, 'contig')
+                    gap(start, stop, count, 'internal')
                   end
           cumulative_length += length + 1
           entry
@@ -56,7 +56,7 @@ class GenomerPluginView::Agp < Genomer::Plugin
   end
 
   def gap(start, stop, count, type)
-    %W|scaffold #{start} #{stop} #{count} N #{stop - start + 1} #{type} yes <required>| * "\t"
+    %W|scaffold #{start} #{stop} #{count} N #{stop - start + 1} scaffold yes #{type}| * "\t"
   end
 
 end
