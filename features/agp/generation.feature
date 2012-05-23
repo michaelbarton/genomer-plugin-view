@@ -210,3 +210,76 @@ Feature: Producing an agp view of a scaffold
      scaffold	16	20	4	W	contig00002	1	5	+
      scaffold	21	25	5	N	5	scaffold	yes	internal
      """
+
+  @disable-bundler
+  Scenario: A single contig scaffold with a gap filled with an insert
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+      """
+      ---
+      -
+        sequence:
+          source: "contig00001"
+          inserts:
+          -
+            source: "insert00001"
+            open: 4
+            close: 6
+      """
+      And I write to "assembly/sequence.fna" with:
+      """
+      >contig00001
+      ATGNNNGCG
+      >insert00001
+      TTT
+      """
+      And I append to "Gemfile" with:
+      """
+      gem 'genomer-plugin-view', :path => '../../../'
+      """
+     When I run `genomer view agp`
+     Then the exit status should be 0
+      And the output should contain:
+     """
+     ##agp-version	2.0
+     scaffold	1	9	1	W	contig00001	1	9	+
+     """
+
+  @disable-bundler
+  Scenario: A single contig scaffold with a gap partially filled with an insert
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+      """
+      ---
+      -
+        sequence:
+          source: "contig00001"
+          inserts:
+          -
+            source: "insert00001"
+            open: 4
+            close: 5
+      """
+      And I write to "assembly/sequence.fna" with:
+      """
+      >contig00001
+      ATGNNNGCG
+      >insert00001
+      TTT
+      """
+      And I append to "Gemfile" with:
+      """
+      gem 'genomer-plugin-view', :path => '../../../'
+      """
+     When I run `genomer view agp`
+     Then the exit status should be 0
+      And the output should contain:
+     """
+     ##agp-version	2.0
+     scaffold	1	6	1	W	contig00001	1	6	+
+     scaffold	7	7	2	N	1	scaffold	yes	internal
+     scaffold	8	10	3	W	contig00002	1	3	+
+     """
+
