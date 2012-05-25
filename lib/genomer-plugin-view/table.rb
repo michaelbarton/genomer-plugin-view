@@ -4,6 +4,8 @@ require 'genomer-plugin-view/gff_record_helper'
 class GenomerPluginView::Table < Genomer::Plugin
 
   def run
+    options = GenomerPluginView.convert_command_line_flags(flags)
+
     header = ">Feature\t#{options[:identifier]}\tannotation_table\n"
 
     attns = annotations(options)
@@ -11,21 +13,6 @@ class GenomerPluginView::Table < Genomer::Plugin
 
     attns.inject(header) do |table,attn|
       table << attn.to_genbank_table_entry
-    end
-  end
-
-  def options
-    flags.inject(Hash.new) do |hash,(k,v)|
-      k = case k
-      when :identifier                then k
-      when :prefix                    then k
-      when :generate_encoded_features then :encoded
-      when :reset_locus_numbering     then :reset
-      else nil
-      end
-
-      hash[k] = v if k
-      hash
     end
   end
 
