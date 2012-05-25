@@ -15,4 +15,18 @@ RSpec.configure do |config|
 
   include Scaffolder::Test
   Scaffolder::Test::Annotation.send(:include, GenomerPluginView::GffRecordHelper)
+
+  def gene(opts = Hash.new)
+    default = {
+      :seqname    => 'seq1',
+      :start      => 1,
+      :end        => 3,
+      :feature    => 'gene',
+      :attributes => Hash.new}
+    Annotation.new(default.merge(opts)).to_gff3_record
+  end
+
+  def cds(opts = Hash.new)
+    gene({:feature => 'CDS'}.merge(opts))
+  end
 end
