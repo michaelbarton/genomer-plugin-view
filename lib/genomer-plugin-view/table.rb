@@ -38,7 +38,7 @@ class GenomerPluginView::Table < Genomer::Plugin
 
         if name
           name = name.clone
-          name[0] = name[0].upcase
+          name[0,1] = name[0,1].upcase
           prdt, ftn = name,prdt
         end
 

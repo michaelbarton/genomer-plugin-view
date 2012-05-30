@@ -29,4 +29,11 @@ RSpec.configure do |config|
   def cds(opts = Hash.new)
     gene({:feature => 'CDS'}.merge(opts))
   end
+
+  class Bio::GFF::GFF3::Record
+    def has_identical_attributes?(other)
+      self.attributes.sort == other.attributes.sort
+    end
+  end
+
 end
