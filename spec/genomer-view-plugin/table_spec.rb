@@ -187,7 +187,7 @@ describe GenomerPluginView::Table do
       end
 
       it "should set the capitalise value to the product key" do
-        subject.should == cds({:attributes => {'product' => 'AbcD'}})
+        subject.should have_identical_attributes cds({:attributes => {'product' => 'AbcD'}})
       end
 
     end
@@ -203,7 +203,7 @@ describe GenomerPluginView::Table do
       end
 
       it "should not change attributes" do
-        subject.should == cds({:attributes => attributes})
+        subject.should have_identical_attributes cds({:attributes => attributes})
       end
 
     end
@@ -219,7 +219,7 @@ describe GenomerPluginView::Table do
       end
 
       it "should not change attributes" do
-        subject.should == cds({:attributes => attributes})
+        subject.should have_identical_attributes cds({:attributes => attributes})
       end
 
     end
@@ -227,7 +227,7 @@ describe GenomerPluginView::Table do
     describe "passed a gene with product and function attributes" do
 
       let(:attributes) do
-        {'product' => 'abcd','function' => 'efgh'}
+        {'product' => 'abcd', 'function' => 'efgh'}
       end
 
       let(:annotations) do
@@ -235,7 +235,7 @@ describe GenomerPluginView::Table do
       end
 
       it "should not change attributes" do
-        subject.should == cds({:attributes => attributes})
+        subject.should have_identical_attributes cds({:attributes => attributes})
       end
 
     end
@@ -251,7 +251,7 @@ describe GenomerPluginView::Table do
       end
 
       it "should map Name to product and product to function" do
-        subject.should == cds({:attributes =>
+        subject.should have_identical_attributes cds({:attributes =>
           {'product' => 'AbcD','function' => 'efgh'}})
       end
 
@@ -268,7 +268,7 @@ describe GenomerPluginView::Table do
       end
 
       it "should map Name to product and product to function" do
-        subject.should == cds({:attributes =>
+        subject.should have_identical_attributes cds({:attributes =>
           {'product' => 'AbcD','function' => 'efgh'}})
       end
 
