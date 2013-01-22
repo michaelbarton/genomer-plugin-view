@@ -1,9 +1,12 @@
+# GENOMER-VIEW 1
+
+## NAME
+
 genomer-view(1) -- Generate file format views of scaffold and annotations
-=========================================================================
 
 ## SYNOPSIS
 
-`genomer view` <flatfile-type> [<options>...]
+`genomer view` \<flatfile-type\> [\<options\>...]
 
 ## DESCRIPTION
 
@@ -13,28 +16,28 @@ the **flat-file** argument.
 
 ## OPTIONS
 
-  * `--identifier`=[<identifier>]:
+  * `--identifier`=[\<identifier\>]:
     The sequence identifier to include in generated flatfile outputs.
 
-  * `--strain`=[<strain>]:
+  * `--strain`=[\<strain\>]:
     The strain of the source organism.
     
-  * `--organism`=[<organism>]:
+  * `--organism`=[\<organism\>]:
     The genus and species, enclosed in single quotes, of the source organism.
 
-  * `--prefix`=[<gene-prefix>]:
-    Prepend all ID attributes from the annotation file with <gene-prefix> in 
+  * `--prefix`=[\<gene-prefix\>]:
+    Prepend all ID attributes from the annotation file with \<gene-prefix\> in 
     the generated output.
 
   * `--reset_locus_numbering`:
     Reset gene ID to begin at 1 from the start of the sequence in the generated 
     output file.
 
-  * `--generate_encoded_features`=[<feature-prefix>]:
+  * `--generate_encoded_features`=[\<feature-prefix\>]:
     Generate corresponding 1:1 encoded feature entries from the genes entries 
     in the annotation file. These will commonly be CDS entries but RNA type 
     entries are also supported. The feature IDs are generated from the 
-    corresponding gene ID prefixed with the <feature-prefix>.
+    corresponding gene ID prefixed with the \<feature-prefix\>.
 
 ## GFF NINTH COLUMN ATTRIBUTES
 
@@ -51,7 +54,7 @@ begin with an upper case letter.
   * `ID`:
     Used to specify the ID of annotations in the output. If the 
     `--generate_encoded_features` option is passed, the encoded features have 
-    an ID generated from this field prefixed with the <feature-prefix> 
+    an ID generated from this field prefixed with the \<feature-prefix\> 
     argument. This field should be unique in the annotation file.
 
   * `Name`:
