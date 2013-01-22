@@ -4,9 +4,16 @@ Feature: Producing an agp view of a scaffold
   to generate an agp file of the scaffold
 
   @disable-bundler
+  Scenario: Getting the man page for the scaffold agp view
+    Given I create a new genomer project
+     When I run `genomer man view agp`
+     Then the exit status should be 0
+      And the output should contain a valid man page
+      And the output should contain "GENOMER-VIEW-AGP(1)"
+
+  @disable-bundler
   Scenario: A single contig scaffold
-    Given I successfully run `genomer init project`
-      And I cd to "project"
+    Given I create a new genomer project
       And I write to "assembly/scaffold.yml" with:
       """
       ---
@@ -19,10 +26,6 @@ Feature: Producing an agp view of a scaffold
       >contig00001
       ATGGC
       """
-      And I append to "Gemfile" with:
-      """
-      gem 'genomer-plugin-view', :path => '../../../'
-      """
      When I run `genomer view agp`
      Then the exit status should be 0
       And the output should contain:
@@ -33,8 +36,7 @@ Feature: Producing an agp view of a scaffold
 
   @disable-bundler
   Scenario: A two contig scaffold
-    Given I successfully run `genomer init project`
-      And I cd to "project"
+    Given I create a new genomer project
       And I write to "assembly/scaffold.yml" with:
       """
       ---
@@ -52,10 +54,6 @@ Feature: Producing an agp view of a scaffold
       >contig00002
       ATGGC
       """
-      And I append to "Gemfile" with:
-      """
-      gem 'genomer-plugin-view', :path => '../../../'
-      """
      When I run `genomer view agp`
      Then the exit status should be 0
       And the output should contain:
@@ -67,8 +65,7 @@ Feature: Producing an agp view of a scaffold
 
   @disable-bundler
   Scenario: A single contig scaffold with a gap
-    Given I successfully run `genomer init project`
-      And I cd to "project"
+    Given I create a new genomer project
       And I write to "assembly/scaffold.yml" with:
       """
       ---
@@ -80,10 +77,6 @@ Feature: Producing an agp view of a scaffold
       """
       >contig00001
       ATGNNNGCG
-      """
-      And I append to "Gemfile" with:
-      """
-      gem 'genomer-plugin-view', :path => '../../../'
       """
      When I run `genomer view agp`
      Then the exit status should be 0
@@ -97,8 +90,7 @@ Feature: Producing an agp view of a scaffold
 
   @disable-bundler
   Scenario: Two contigs scaffold containing gaps
-    Given I successfully run `genomer init project`
-      And I cd to "project"
+    Given I create a new genomer project
       And I write to "assembly/scaffold.yml" with:
       """
       ---
@@ -116,10 +108,6 @@ Feature: Producing an agp view of a scaffold
       >contig00002
       ANG
       """
-      And I append to "Gemfile" with:
-      """
-      gem 'genomer-plugin-view', :path => '../../../'
-      """
      When I run `genomer view agp`
      Then the exit status should be 0
       And the output should contain:
@@ -135,8 +123,7 @@ Feature: Producing an agp view of a scaffold
 
   @disable-bundler
   Scenario: Two contigs separated by an unresolved region
-    Given I successfully run `genomer init project`
-      And I cd to "project"
+    Given I create a new genomer project
       And I write to "assembly/scaffold.yml" with:
       """
       ---
@@ -156,10 +143,6 @@ Feature: Producing an agp view of a scaffold
       ATGAT
       >contig00002
       ATGAT
-      """
-      And I append to "Gemfile" with:
-      """
-      gem 'genomer-plugin-view', :path => '../../../'
       """
      When I run `genomer view agp`
      Then the exit status should be 0
@@ -173,8 +156,7 @@ Feature: Producing an agp view of a scaffold
 
   @disable-bundler
   Scenario: Two contigs separated by an unresolved region
-    Given I successfully run `genomer init project`
-      And I cd to "project"
+    Given I create a new genomer project
       And I write to "assembly/scaffold.yml" with:
       """
       ---
@@ -194,10 +176,6 @@ Feature: Producing an agp view of a scaffold
       ATGATNNNNN
       >contig00002
       ATGATNNNNN
-      """
-      And I append to "Gemfile" with:
-      """
-      gem 'genomer-plugin-view', :path => '../../../'
       """
      When I run `genomer view agp`
      Then the exit status should be 0
@@ -213,8 +191,7 @@ Feature: Producing an agp view of a scaffold
 
   @disable-bundler
   Scenario: A single contig scaffold with a gap filled with an insert
-    Given I successfully run `genomer init project`
-      And I cd to "project"
+    Given I create a new genomer project
       And I write to "assembly/scaffold.yml" with:
       """
       ---
@@ -234,10 +211,6 @@ Feature: Producing an agp view of a scaffold
       >insert00001
       TTT
       """
-      And I append to "Gemfile" with:
-      """
-      gem 'genomer-plugin-view', :path => '../../../'
-      """
      When I run `genomer view agp`
      Then the exit status should be 0
       And the output should contain:
@@ -248,8 +221,7 @@ Feature: Producing an agp view of a scaffold
 
   @disable-bundler
   Scenario: A single contig scaffold with a gap partially filled with an insert
-    Given I successfully run `genomer init project`
-      And I cd to "project"
+    Given I create a new genomer project
       And I write to "assembly/scaffold.yml" with:
       """
       ---
@@ -268,10 +240,6 @@ Feature: Producing an agp view of a scaffold
       ATGNNNGCG
       >insert00001
       TTT
-      """
-      And I append to "Gemfile" with:
-      """
-      gem 'genomer-plugin-view', :path => '../../../'
       """
      When I run `genomer view agp`
      Then the exit status should be 0

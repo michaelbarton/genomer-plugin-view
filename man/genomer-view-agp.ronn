@@ -1,5 +1,8 @@
+# GENOMER-VIEW-AGP 1
+
+## NAME
+
 genomer-view-agp(1) -- Generate agp file views of scaffold
-==========================================================
 
 ## SYNOPSIS
 
