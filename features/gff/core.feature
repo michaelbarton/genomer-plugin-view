@@ -4,6 +4,14 @@ Feature: Producing a gff3 view of a scaffold's annotations
   to generate gff3 view of scaffold annotations
 
   @disable-bundler
+  Scenario: Getting the man page for the scaffold gff view
+    Given I create a new genomer project
+     When I run `genomer man view gff`
+     Then the exit status should be 0
+      And the output should contain a valid man page
+      And the output should contain "GENOMER-VIEW-GFF(1)"
+
+  @disable-bundler
   Scenario: A single annotation on a single contig
     Given I successfully run `genomer init project`
       And I cd to "project"
