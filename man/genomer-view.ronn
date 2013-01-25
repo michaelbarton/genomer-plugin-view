@@ -41,7 +41,7 @@ the **flat-file** argument.
 
 ## GFF NINTH COLUMN ATTRIBUTES
 
-The annotation file should be in GFF3 format and contain the annotations for 
+The source annotation file should be in GFF3 format and contain the annotations for 
 the scaffolded contigs. The default location for this file is
 **assembly/annotations.gff**. The following attributes in the GFF3 file are 
 treated specially by genomer when generating flat file output.
@@ -98,7 +98,6 @@ section.
     table output by the **product** attribute if both the **Name** and 
     **product** attributes are present. See the next section for an explanation 
     of this.
-
 
 ### OVERLAP BETWEEN NAME, PRODUCT AND FUNCTION FIELD
 
