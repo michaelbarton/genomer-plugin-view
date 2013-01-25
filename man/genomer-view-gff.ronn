@@ -1,0 +1,34 @@
+# GENOMER-VIEW-GFF 1
+
+## NAME
+
+genomer-view-gff(1) -- Generate GFF3 view of genome scaffold annotations
+
+## SYNOPSIS
+
+`genomer view gff [<annotation-options>]`
+
+## DESCRIPTION
+
+**Genomer-view-gff** produces a [GFF3 formatted][gff] view of the genome
+scaffold annotations. The IDs and coordinates of the annotations are updated to
+reflect the locations of the source contigs in the genome scaffold. The man
+page genomer-view(1) provides a listing of the \<annotation-options\> which may
+be passed as arguments to update the annotations.
+
+[gff]: http://www.sequenceontology.org/gff3.shtml
+
+## EXAMPLES
+
+    $ genomer view gff					 \
+      --reset_locus_numbering=52 \
+      --prefix='I1A_'
+
+## BUGS
+
+**Genomer-view** is written in Ruby and depends on the genomer gem. See the 
+Gemfile in the genomer-plugin-view gem install directory for version details.
+
+## COPYRIGHT
+
+**Genomer** is Copyright (C) 2012 Michael Barton <http://michaelbarton.me.uk>
