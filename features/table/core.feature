@@ -4,6 +4,15 @@ Feature: Producing a annotation view of a scaffold
   to generate the genbank annotation table format
 
   @disable-bundler
+  Scenario: Getting the man page for the scaffold table view
+    Given I create a new genomer project
+     When I run `genomer man view table`
+     Then the exit status should be 0
+      And the output should contain a valid man page
+      And the output should contain "GENOMER-VIEW-TABLE(1)"
+
+
+  @disable-bundler
   Scenario: Generating a table file from a single annotation
     Given I successfully run `genomer init project`
       And I cd to "project"

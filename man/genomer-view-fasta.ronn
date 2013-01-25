@@ -1,0 +1,48 @@
+# GENOMER-VIEW-FASTA 1
+
+## NAME
+
+genomer-view-fasta(1) -- Generate fasta view of scaffold
+
+## SYNOPSIS
+
+`genomer view fasta <--contigs> [...<header-options>]`
+
+## DESCRIPTION
+
+**Genomer-view-fasta** produces an fasta file of scaffold. This format provides
+the complete scaffolded sequence of all contigs and gaps specified in the
+**scaffold.yml** file.
+
+  **--contigs**:
+
+  Instead of generating a single sequence where gaps are represented by
+  N-filled regions generate a fasta file where each contiguous region of
+  sequence is a new fasta entry. Gap regions are not included in the fasta
+  file. This option is useful if submitting an incomplete genome sequence to
+  GenBank as the contigs are require in addition to an AGP file (see
+  genomer-view-agp(1)).
+
+Additional header options can be specified. These are useful for adding
+metadata to the fasta sequence. Any combination of dashes (-) and characters
+may be used. See the example below for how this may be used.
+
+## EXAMPLES
+
+    genomer view fasta	                      				 \
+      --contigs                                        \
+      --organism='Pseudomonas fluorescens'             \
+      --strain='R124'                                  \
+      --gcode='11'                                     \
+      --isolation-source='Orthoquartzite Cave Surface' \
+      --collection-date='17-Oct-2007'                  \
+      --completeness='Complete'                        \
+
+## BUGS
+
+**Genomer-view** is written in Ruby and depends on the genomer gem. See the 
+Gemfile in the genomer-plugin-view gem install directory for version details.
+
+## COPYRIGHT
+
+**Genomer** is Copyright (C) 2012 Michael Barton <http://michaelbarton.me.uk>
