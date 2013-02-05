@@ -16,18 +16,38 @@ describe GenomerPluginView do
       GenomerPluginView::Example = Class.new(GenomerPluginView)
     end
 
-    before do
-      mock(described_class).fetch_view('example') do
-        example
+    context "with a view argument passed" do
+
+      before do
+        mock(described_class).fetch_view('example') do
+          example
+        end
       end
+
+      it "should initialize and run the required view plugin" do
+        mock.proxy(example).new([:arg],:flags) do |instance|
+          mock(instance).run
+        end
+
+        described_class.new(['example',:arg],:flags).run
+      end
+
     end
 
-    it "should initialize and run the required view plugin" do
-      mock.proxy(example).new([:arg],:flags) do |instance|
-        mock(instance).run
+    context "with no argument passed" do
+
+      it "should return help information" do
+        described_class.new([],[]).run.should ==<<-STRING.unindent
+      Run `genomer man view COMMAND` to review available formats
+      Where COMMAND is one of the following:
+        agp
+        fasta
+        gff
+        mapping
+        table
+        STRING
       end
 
-      described_class.new(['example',:arg],:flags).run
     end
 
   end
