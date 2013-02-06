@@ -37,6 +37,7 @@ class GenomerPluginView < Genomer::Plugin
       map{|f| File.basename(f).gsub('.rb','')}.
       delete_if{|i| i == 'version'}.
       delete_if{|i| i == 'gff_record_helper'}.
+      sort.
       map{|i| " " * 2 + i}.
       join("\n") + "\n"
   end
