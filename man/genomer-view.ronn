@@ -99,6 +99,10 @@ section.
     **product** attributes are present. See the next section for an explanation 
     of this.
 
+  * `db_xref`: Used to link the annotation to other database references. This
+    field is added to verbatim to generated output. Multiple entires of this
+    field may be used.
+
 ### OVERLAP BETWEEN NAME, PRODUCT AND FUNCTION FIELD
 
 The genbank annotation table **product** fields may contain either a short four 
