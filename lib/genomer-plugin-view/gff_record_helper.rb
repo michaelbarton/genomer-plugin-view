@@ -13,6 +13,7 @@ module GenomerPluginView::GffRecordHelper
     'CDS' => DEFAULT_GFF_MAPPING.merge({
       'ID'        => 'protein_id',
       'ec_number' => 'EC_number',
+      'db_xref'   => 'db_xref',
       'function'  => 'function',
     }),
     'miscRNA' => DEFAULT_GFF_MAPPING,

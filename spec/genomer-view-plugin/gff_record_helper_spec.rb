@@ -217,6 +217,7 @@ describe GenomerPluginView::GffRecordHelper do
       :CDS  => {
         'ec_number' => 'EC_number',
         'function'  => 'function',
+        'db_xref'   => 'db_xref',
         'product'   => 'product',
         'Note'      => 'note',
         'ID'        => 'protein_id' }}
@@ -237,7 +238,6 @@ describe GenomerPluginView::GffRecordHelper do
         end
       end
     end
-
 
   end
 

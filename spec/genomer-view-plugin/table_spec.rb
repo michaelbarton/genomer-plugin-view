@@ -69,6 +69,25 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "with one gene annotation and the CDS flag and dbxref attributes" do
+
+      let(:flags){ {:generate_encoded_features => true} }
+
+      let(:annotations){ [gene({:attributes => {'db_xref' => 'ref1',
+                                                'db_xref' => 'ref2'}})] }
+
+      it "should call the to_genbank_features method " do
+        subject.run.should == <<-EOS.unindent
+        >Feature\t\tannotation_table
+        1\t3\tgene
+        1\t3\tCDS
+        \t\t\tdb_xref\tref1
+        \t\t\tdb_xref\tref2
+        EOS
+      end
+
+    end
+
     describe "with one gene annotation and the CDS prefix flag" do
 
       let(:flags){ {:generate_encoded_features => 'pre_'} }
@@ -274,6 +293,37 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "passed a gene with a single db_xref attribute" do
+
+      let(:attributes) do
+        {'db_xref' => 'InterPro:IPR000111'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should have_identical_attributes cds({:attributes => attributes})
+      end
+
+    end
+
+    describe "passed a gene with multiple db_xref attribute" do
+
+      let(:attributes) do
+        {'db_xref' => 'InterPro:IPR000111','db_xref' => 'GO:000001'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should have_identical_attributes cds({:attributes => attributes})
+      end
+
+    end
   end
 
 end
