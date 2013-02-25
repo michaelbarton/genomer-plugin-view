@@ -2,8 +2,7 @@ require 'bio'
 
 module GenomerPluginView::GffRecordHelper
 
-
-  DEFAULT_GFF_MAPPING = {'product' => 'product', 'Note' => 'note' }
+  DEFAULT_GFF_MAPPING = {'product' => 'product', 'Note' => 'note', 'db_xref' => 'db_xref'}
 
   GFF_TO_TABLE = {
     'gene' => {
@@ -13,7 +12,6 @@ module GenomerPluginView::GffRecordHelper
     'CDS' => DEFAULT_GFF_MAPPING.merge({
       'ID'        => 'protein_id',
       'ec_number' => 'EC_number',
-      'db_xref'   => 'db_xref',
       'function'  => 'function',
     }),
     'miscRNA' => DEFAULT_GFF_MAPPING,
