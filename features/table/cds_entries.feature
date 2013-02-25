@@ -302,3 +302,78 @@ Feature: Producing cds annotation view from a scaffold
 
         """
 
+  @disable-bundler
+  Scenario: A CDS entry with a single db_xref attribute
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+        """
+        ---
+          - sequence:
+              source: contig1
+        """
+      And I write to "assembly/sequence.fna" with:
+        """
+        >contig1
+        AAAAATTTTTGGGGGCCCCC
+        """
+      And I write to "assembly/annotations.gff" with:
+        """
+        ##gff-version 3
+	contig1	.	gene	1	3	.	-	1	ID=gene1;db_xref=GO:000001
+        """
+      And I append to "Gemfile" with:
+        """
+        gem 'genomer-plugin-view', :path => '../../../'
+        """
+     When I run `genomer view table --identifier=genome --generate_encoded_features`
+     Then the exit status should be 0
+      And the output should contain:
+        """
+        >Feature	genome	annotation_table
+        3	1	gene
+        			locus_tag	gene1
+        3	1	CDS
+        			protein_id	gene1
+        			db_xref	GO:000001
+
+        """
+
+  @disable-bundler
+  Scenario: A CDS entry with multiple db_xref attributes
+    Given I successfully run `genomer init project`
+      And I cd to "project"
+      And I write to "assembly/scaffold.yml" with:
+        """
+        ---
+          - sequence:
+              source: contig1
+        """
+      And I write to "assembly/sequence.fna" with:
+        """
+        >contig1
+        AAAAATTTTTGGGGGCCCCC
+        """
+      And I write to "assembly/annotations.gff" with:
+        """
+        ##gff-version 3
+	contig1	.	gene	1	3	.	-	1	ID=gene1;db_xref=GO:000001;db_xref=InterPro:IPR000111
+        """
+      And I append to "Gemfile" with:
+        """
+        gem 'genomer-plugin-view', :path => '../../../'
+        """
+     When I run `genomer view table --identifier=genome --generate_encoded_features`
+     Then the exit status should be 0
+      And the output should contain:
+        """
+        >Feature	genome	annotation_table
+        3	1	gene
+        			locus_tag	gene1
+        3	1	CDS
+        			protein_id	gene1
+        			db_xref	GO:000001
+        			db_xref	InterPro:IPR000111
+
+        """
+
