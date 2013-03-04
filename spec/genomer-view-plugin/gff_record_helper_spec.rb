@@ -216,6 +216,7 @@ describe GenomerPluginView::GffRecordHelper do
        ['Note',      'note']],
       :CDS => [
        ['ec_number', 'EC_number'],
+       ['db_xref',   'db_xref'],
        ['function',  'function'],
        ['product',   'product'],
        ['Note',      'note'],

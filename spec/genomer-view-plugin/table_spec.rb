@@ -306,6 +306,37 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "passed a gene with a single db_xref attribute" do
+
+      let(:attributes) do
+        {'db_xref' => 'InterPro:IPR000111'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should have_identical_attributes cds({:attributes => attributes})
+      end
+
+    end
+
+    describe "passed a gene with multiple db_xref attribute" do
+
+      let(:attributes) do
+        {'db_xref' => 'InterPro:IPR000111','db_xref' => 'GO:000001'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should have_identical_attributes cds({:attributes => attributes})
+      end
+
+    end
   end
 
 end
