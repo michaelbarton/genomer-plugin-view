@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "genomer-plugin-view"
   s.version     = GenomerViewPlugin::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.homepage    = "http://github.com/michaelbarton/genomer-plugin-view"
+  s.homepage    = "http://next.gs"
   s.license     = "MIT"
   s.authors     = ["Michael Barton"]
   s.email       = ["mail@michaelbarton.me.uk"]
