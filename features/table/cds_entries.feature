@@ -374,6 +374,4 @@ Feature: Producing cds annotation view from a scaffold
         			protein_id	gene1
         			db_xref	GO:000001
         			db_xref	InterPro:IPR000111
-
         """
-
