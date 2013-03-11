@@ -22,7 +22,7 @@ RSpec.configure do |config|
       :start      => 1,
       :end        => 3,
       :feature    => 'gene',
-      :attributes => Hash.new}
+      :attributes => Array.new}
     Annotation.new(default.merge(opts)).to_gff3_record
   end
 

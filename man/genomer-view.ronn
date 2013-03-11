@@ -68,6 +68,10 @@ begin with an upper case letter.
     Used to populate the **Note** field for entries when the 
     `--generate_encoded_features` option is passed.
 
+  * `DBxref`: Used to link the annotation to other database references. This
+    field is added verbatim to generated output. Multiple entires of this
+    field may be used.
+
 ### GENOMER ATTRIBUTES
 
 These attributes are specific to genomer and should begin with a lower case 

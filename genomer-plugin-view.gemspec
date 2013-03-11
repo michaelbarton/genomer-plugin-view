@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "genomer-plugin-view"
   s.version     = GenomerViewPlugin::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.homepage    = "http://github.com/michaelbarton/genomer-plugin-view"
+  s.homepage    = "http://next.gs"
   s.license     = "MIT"
   s.authors     = ["Michael Barton"]
   s.email       = ["mail@michaelbarton.me.uk"]
@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = "~> 1.8.0"
   s.rubyforge_project         = "genomer-view-plugin"
 
-  s.add_dependency "genomer", ">= 0.0.6"
+  s.add_dependency "genomer", ">= 0.0.10"
 
   # Specs
   s.add_development_dependency "rspec",                   "~> 2.9.0"

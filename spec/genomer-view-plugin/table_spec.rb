@@ -73,7 +73,7 @@ describe GenomerPluginView::Table do
 
       let(:flags){ {:generate_encoded_features => 'pre_'} }
 
-      let(:annotations){ [gene({:attributes => {'ID' => '1'}})] }
+      let(:annotations){ [gene({:attributes => [['ID', '1']]})] }
 
       it "should call the to_genbank_features method " do
         subject.run.should == <<-EOS.unindent
@@ -91,9 +91,9 @@ describe GenomerPluginView::Table do
 
       let(:flags){ {:generate_encoded_features => 'pre_'} }
 
-      let(:annotations){ [gene({:attributes => {'ID'           => '1',
-                                                'feature_type' => 'tRNA',
-                                                'product'      => 'tRNA-Gly'}})] }
+      let(:annotations){ [gene({:attributes => [['ID',           '1'],
+                                                ['feature_type', 'tRNA'],
+                                                ['product',      'tRNA-Gly']]})] }
 
       it "should call the to_genbank_features method " do
         subject.run.should == <<-EOS.unindent
@@ -112,7 +112,7 @@ describe GenomerPluginView::Table do
   describe "#create_encoded_features" do
 
     let(:prefix) do
-      nil
+      true
     end
 
     subject do
@@ -143,10 +143,26 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "passed a gene with an ID attributes" do
+
+      let(:attributes) do
+        [['ID', 'something']]
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change the attributes" do
+        subject.attributes.should == attributes
+      end
+
+    end
+
     describe "passed a gene with a known feature_type attribute" do
 
       let(:attributes) do
-        {'feature_type' => 'tRNA'}
+        [['feature_type', 'tRNA']]
       end
 
       let(:annotations) do
@@ -162,7 +178,7 @@ describe GenomerPluginView::Table do
     describe "passed a gene with an unknown feature_type attribute" do
 
       let(:attributes) do
-        {'feature_type' => 'unknown'}
+        [['feature_type', 'unknown']]
       end
 
       let(:annotations) do
@@ -176,10 +192,26 @@ describe GenomerPluginView::Table do
 
     end
 
+    describe "passed a gene with a duplicate attribute" do
+
+      let(:attributes) do
+        [['product', 'abcd'],['product', 'efgh']]
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should have_identical_attributes cds({:attributes => attributes})
+      end
+
+    end
+
     describe "passed a gene with a Name attribute" do
 
       let(:attributes) do
-        {'Name' => 'abcD'}
+        [['Name', 'abcD']]
       end
 
       let(:annotations) do
@@ -187,7 +219,7 @@ describe GenomerPluginView::Table do
       end
 
       it "should set the capitalise value to the product key" do
-        subject.should have_identical_attributes cds({:attributes => {'product' => 'AbcD'}})
+        subject.should have_identical_attributes cds({:attributes => [['product', 'AbcD']]})
       end
 
     end
@@ -195,7 +227,7 @@ describe GenomerPluginView::Table do
     describe "passed a gene with a product attribute" do
 
       let(:attributes) do
-        {'product' => 'abcd'}
+        [['product', 'abcd']]
       end
 
       let(:annotations) do
@@ -211,7 +243,7 @@ describe GenomerPluginView::Table do
     describe "passed a gene with a function attribute" do
 
       let(:attributes) do
-        {'function' => 'abcd'}
+        [['function', 'abcd']]
       end
 
       let(:annotations) do
@@ -227,7 +259,7 @@ describe GenomerPluginView::Table do
     describe "passed a gene with product and function attributes" do
 
       let(:attributes) do
-        {'product' => 'abcd', 'function' => 'efgh'}
+        [['product', 'abcd'], ['function', 'efgh']]
       end
 
       let(:annotations) do
@@ -243,7 +275,7 @@ describe GenomerPluginView::Table do
     describe "passed a gene with Name and product attributes" do
 
       let(:attributes) do
-        {'Name' => 'abcD','product' => 'efgh'}
+        [['Name', 'abcD'], ['product', 'efgh']]
       end
 
       let(:annotations) do
@@ -252,7 +284,7 @@ describe GenomerPluginView::Table do
 
       it "should map Name to product and product to function" do
         subject.should have_identical_attributes cds({:attributes =>
-          {'product' => 'AbcD','function' => 'efgh'}})
+          [['product', 'AbcD'], ['function', 'efgh']]})
       end
 
     end
@@ -260,7 +292,7 @@ describe GenomerPluginView::Table do
     describe "passed a gene with Name, product and function attributes" do
 
       let(:attributes) do
-        {'Name' => 'abcD','product' => 'efgh', 'function' => 'ijkl'}
+        [['Name', 'abcD'], ['product', 'efgh'], ['function', 'ijkl']]
       end
 
       let(:annotations) do
@@ -269,11 +301,42 @@ describe GenomerPluginView::Table do
 
       it "should map Name to product and product to function" do
         subject.should have_identical_attributes cds({:attributes =>
-          {'product' => 'AbcD','function' => 'efgh'}})
+          [['product', 'AbcD'], ['function', 'efgh']]})
       end
 
     end
 
+    describe "passed a gene with a single db_xref attribute" do
+
+      let(:attributes) do
+        {'db_xref' => 'InterPro:IPR000111'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should have_identical_attributes cds({:attributes => attributes})
+      end
+
+    end
+
+    describe "passed a gene with multiple db_xref attribute" do
+
+      let(:attributes) do
+        {'db_xref' => 'InterPro:IPR000111','db_xref' => 'GO:000001'}
+      end
+
+      let(:annotations) do
+        [gene({:attributes => attributes})]
+      end
+
+      it "should not change attributes" do
+        subject.should have_identical_attributes cds({:attributes => attributes})
+      end
+
+    end
   end
 
 end

@@ -68,7 +68,7 @@ describe GenomerPluginView::GffRecordHelper do
     context "gene feature with attributes" do
 
       let(:annotation) do
-        @attn.feature('gene').attributes('ID' => 'id')
+        @attn.feature('gene').attributes([['ID', 'id']])
       end
 
       it "should return a table entry" do
@@ -189,7 +189,7 @@ describe GenomerPluginView::GffRecordHelper do
     context "for a feature with an unknown attribute" do
 
       let(:annotation) do
-        @attn.attributes('something' => 'else')
+        @attn.attributes([['something','else']])
       end
 
       it "should return an empty array" do
@@ -199,34 +199,38 @@ describe GenomerPluginView::GffRecordHelper do
     end
 
     feature_keys = {
-      :gene => {
-        'Name' => 'gene',
-        'ID'   => 'locus_tag' },
-      :tRNA => {
-        'product' => 'product',
-        'Note'    => 'note'},
-      :rRNA => {
-        'product' => 'product',
-        'Note'    => 'note'},
-      :miscRNA => {
-        'product' => 'product',
-        'Note'    => 'note'},
-      :tmRNA => {
-        'product' => 'product',
-        'Note'    => 'note'},
-      :CDS  => {
-        'ec_number' => 'EC_number',
-        'function'  => 'function',
-        'product'   => 'product',
-        'Note'      => 'note',
-        'ID'        => 'protein_id' }}
+      :gene => [
+       ['Name',    'gene'],
+       ['ID',      'locus_tag']],
+      :tRNA => [
+       ['DBxref',    'db_xref'],
+       ['product', 'product'],
+       ['Note',    'note']],
+      :rRNA => [
+       ['product', 'product'],
+       ['Note',    'note']],
+      :miscRNA => [
+       ['DBxref',    'db_xref'],
+       ['product',   'product'],
+       ['Note',      'note']],
+      :tmRNA => [
+       ['DBxref',    'db_xref'],
+       ['product',   'product'],
+       ['Note',      'note']],
+      :CDS => [
+       ['ec_number', 'EC_number'],
+       ['DBxref',    'db_xref'],
+       ['function',  'function'],
+       ['product',   'product'],
+       ['Note',      'note'],
+       ['ID',        'protein_id' ]]}
 
     feature_keys.each do |type,mappings|
       mappings.each do |a,b|
         context "#{type.to_s} feature" do
 
           let(:annotation) do
-            @attn.feature(type.to_s).attributes(a => :value)
+            @attn.feature(type.to_s).attributes([[a, :value]])
           end
 
           it "should return #{b} for the attribute #{a}" do
@@ -237,7 +241,6 @@ describe GenomerPluginView::GffRecordHelper do
         end
       end
     end
-
 
   end
 

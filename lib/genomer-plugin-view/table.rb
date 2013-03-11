@@ -21,33 +21,37 @@ class GenomerPluginView::Table < Genomer::Plugin
   def create_encoded_features(genes,prefix)
     features = genes.map do |gene|
       feature = gene.clone
-      attrs   = Hash[feature.attributes]
+      attrs   = feature.attributes.clone
 
-      if id = attrs['ID']
-        attrs['ID'] = (prefix.is_a?(String) ? prefix + id : id)
-      end
-
-      feature.feature = attrs['feature_type'] || 'CDS'
+      feature_type    = attrs.detect{|k,v| k == 'feature_type'}
+      feature.feature = (feature_type ? feature_type.last : 'CDS')
 
       unless SUPPORTED_FEATURE_TYPES.include?(feature.feature)
         raise Genomer::Error, "Unknown feature_type '#{feature.feature}'"
       end
 
-      if feature.feature == "CDS"
-        name, prdt, ftn = attrs['Name'], attrs['product'], attrs['function']
-
-        if name
-          name = name.clone
-          name[0,1] = name[0,1].upcase
-          prdt, ftn = name,prdt
-        end
-
-        attrs.delete('Name')
-        attrs['product']  = prdt
-        attrs['function'] = ftn
+      attrs.map! do |(k,v)|
+        v = (k == 'ID' && prefix.instance_of?(String) ? prefix + v : v)
+        [k,v]
       end
 
-      feature.attributes = attrs.to_a.reject{|(_,value)| value.nil? }
+      if feature.feature == "CDS"
+
+        if attrs.detect{|(k,v)| k == 'Name' }
+          attrs.map! do |(k,v)|
+            v      = v.clone
+            v[0,1] = v[0,1].upcase if k == 'Name'
+
+            v = nil                if k == 'function'
+            k = 'function'         if k == 'product'
+            k = 'product'          if k == 'Name'
+            [k,v]
+          end
+        end
+        #attrs.delete('Name')
+      end
+
+      feature.attributes = attrs.reject{|(_,value)| value.nil? }
       feature
     end
     genes.zip(features).flatten
