@@ -60,7 +60,7 @@ begin with an upper case letter.
   * `Name`:
     Used to specify the four letter annotation name, e.g. pilO. The lower case 
     version is used for gene names. If the `--generate_encoded_features` option 
-    is passed, additonal encoded feature entries have the `product` field 
+    is passed, additional encoded feature entries have the `product` field 
     generated from this capitalised version of this attribute. This need not be 
     unique in the file.
 
@@ -69,26 +69,26 @@ begin with an upper case letter.
     `--generate_encoded_features` option is passed.
 
   * `DBxref`: Used to link the annotation to other database references. This
-    field is added verbatim to generated output. Multiple entires of this
+    field is added verbatim to generated output. Multiple entries of this
     field may be used.
 
 ### GENOMER ATTRIBUTES
 
 These attributes are specific to genomer and should begin with a lower case 
 letter. Many of these attributes have a corresponding relationship with fields 
-in genbank table format, however a caveat to this is outlined in the next 
+in GenBank table format, however a caveat to this is outlined in the next 
 section.
 
   * `product`:
     Used to populate the **product** field for encoded features when the 
     `--generate_encoded_features` option is passed. If the **Name** attribute 
-    is also present then the **funtion** field is instead populated with this 
+    is also present then the **function** field is instead populated with this 
     value.
 
-  * `entry_type`:
+  * `feature_type`:
     When the gene product is not a CDS this field can be used, when the 
     `--generate_encoded_features` option is passed, as the corresponding entry 
-    type instead of `CDS`. The genbank specification list examples for `rRNA`, 
+    type instead of `CDS`. The GenBank specification list examples for `rRNA`, 
     `tmRNA`, `tRNA`, and `miscRNA`. If you require other feature type 
     implemented, please contact me through the website below.
 
@@ -105,31 +105,31 @@ section.
 
 ### OVERLAP BETWEEN NAME, PRODUCT AND FUNCTION FIELD
 
-The genbank annotation table **product** fields may contain either a short four 
+The GenBank annotation table **product** fields may contain either a short four 
 letter name (e.g. pilO) or a longer gene description (e.g. pilus assembly 
 protein). This presents a problem where data may need to be juggled between the
 **Name**, **product** and **function** fields depending on what is information 
-is avaiable.
+is available.
 
 Genomer view solves this problem by prioritising these fields in the following 
 order: **Name** > **product** > **function**. If the **Name** attribute is 
-present this will be used for the **product** field in the resulting genbank 
+present this will be used for the **product** field in the resulting GenBank 
 table. If the **product** attribute is also present at the same time this will 
-instead be used to fill out the **function** field in the genbank table. If 
+instead be used to fill out the **function** field in the GenBank table. If 
 only the **product** and **function** attributes are present then these then 
-map to corresponding fields in genbank table. 
+map to corresponding fields in GenBank table. 
 
 ### RECOMMENDED FORMAT FOR ANNOTATIONS
 
 All entries should contain a unique `ID` attribute. A `Name` field be used 
 whenever an appropriate four letter name is also available, e.g. 'pilO'. The ID 
-field alone is sufficent for generating a gene-only annotation table. Generally 
+field alone is sufficient for generating a gene-only annotation table. Generally 
 however you will want to generate the encoded annotations also using the 
 `--generate_encoded_annotations` command line flag..
 
 The majority of encoded annotations will be CDS entries but most genomes will 
 also contain RNA non-coding features. CDS annotations should contain either a 
-`product` and/or `Name` field to match the genbank requirements. In general it 
+`product` and/or `Name` field to match the GenBank requirements. In general it 
 may be easier to fill out all the `product` field for entries then add names 
 for entries where possible.
 
