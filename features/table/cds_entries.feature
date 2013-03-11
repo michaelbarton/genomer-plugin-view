@@ -303,7 +303,7 @@ Feature: Producing cds annotation view from a scaffold
         """
 
   @disable-bundler
-  Scenario: A CDS entry with a single db_xref attribute
+  Scenario: A CDS entry with a single DBxref attribute
     Given I successfully run `genomer init project`
       And I cd to "project"
       And I write to "assembly/scaffold.yml" with:
@@ -320,7 +320,7 @@ Feature: Producing cds annotation view from a scaffold
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-	contig1	.	gene	1	3	.	-	1	ID=gene1;db_xref=GO:000001
+	contig1	.	gene	1	3	.	-	1	ID=gene1;DBxref=GO:000001
         """
       And I append to "Gemfile" with:
         """
@@ -340,7 +340,7 @@ Feature: Producing cds annotation view from a scaffold
         """
 
   @disable-bundler
-  Scenario: A CDS entry with multiple db_xref attributes
+  Scenario: A CDS entry with multiple DBxref attributes
     Given I successfully run `genomer init project`
       And I cd to "project"
       And I write to "assembly/scaffold.yml" with:
@@ -357,7 +357,7 @@ Feature: Producing cds annotation view from a scaffold
       And I write to "assembly/annotations.gff" with:
         """
         ##gff-version 3
-	contig1	.	gene	1	3	.	-	1	ID=gene1;db_xref=GO:000001;db_xref=InterPro:IPR000111
+	contig1	.	gene	1	3	.	-	1	ID=gene1;DBxref=GO:000001;DBxref=InterPro:IPR000111
         """
       And I append to "Gemfile" with:
         """

@@ -2,7 +2,7 @@ require 'bio'
 
 module GenomerPluginView::GffRecordHelper
 
-  DEFAULT_GFF_MAPPING = {'product' => 'product', 'Note' => 'note', 'db_xref' => 'db_xref'}
+  DEFAULT_GFF_MAPPING = {'product' => 'product', 'Note' => 'note', 'DBxref' => 'db_xref'}
 
   GFF_TO_TABLE = {
     'gene' => {

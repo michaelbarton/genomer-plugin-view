@@ -203,20 +203,23 @@ describe GenomerPluginView::GffRecordHelper do
        ['Name',    'gene'],
        ['ID',      'locus_tag']],
       :tRNA => [
+       ['DBxref',    'db_xref'],
        ['product', 'product'],
        ['Note',    'note']],
       :rRNA => [
        ['product', 'product'],
        ['Note',    'note']],
       :miscRNA => [
+       ['DBxref',    'db_xref'],
        ['product',   'product'],
        ['Note',      'note']],
       :tmRNA => [
+       ['DBxref',    'db_xref'],
        ['product',   'product'],
        ['Note',      'note']],
       :CDS => [
        ['ec_number', 'EC_number'],
-       ['db_xref',   'db_xref'],
+       ['DBxref',    'db_xref'],
        ['function',  'function'],
        ['product',   'product'],
        ['Note',      'note'],
