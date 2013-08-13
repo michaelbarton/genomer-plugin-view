@@ -85,7 +85,7 @@ section.
     is also present then the **function** field is instead populated with this 
     value.
 
-  * `entry_type`:
+  * `feature_type`:
     When the gene product is not a CDS this field can be used, when the 
     `--generate_encoded_features` option is passed, as the corresponding entry 
     type instead of `CDS`. The GenBank specification list examples for `rRNA`, 
