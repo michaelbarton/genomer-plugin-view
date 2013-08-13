@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
   s.summary     = %Q{Provide different views of scaffold.}
   s.description = %Q{Convert genome scaffold into different sequence format views}
 
-  s.required_rubygems_version = "~> 1.8.0"
   s.rubyforge_project         = "genomer-view-plugin"
 
   s.add_dependency "genomer", ">= 0.0.10"
